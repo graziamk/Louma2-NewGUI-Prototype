@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.cpp</file>
+        <file>main.qml</file>
+        <file>Page00SplashScreen.qml</file>
+        <file>Page00SplashScreenForm.ui.qml</file>
+        <file>Page01OperatorForm.ui.qml</file>
+        <file>Page02HandwheelDragForm.ui.qml</file>
+        <file>Page03LensForm.ui.qml</file>
+        <file>Page04CameraForm.ui.qml</file>
+        <file>Page05CopyNodeForm.ui.qml</file>
+        <file>Page06TelescopeForm.ui.qml</file>
+        <file>Page07PlaningForm.ui.qml</file>
+        <file>Page08ErrorLogForm.ui.qml</file>
+        <file>Page09Utility.qml</file>
+        <file>Page09UtilityForm.ui.qml</file>
+        <file>Page10MenuForm.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>images/0012.svg</file>
+        <file>images/1166B.svg</file>
+        <file>images/5162.svg</file>
+        <file>images/5324.svg</file>
+        <file>images/5352.svg</file>
+        <file>images/5887.svg</file>
+        <file>images/6057.svg</file>
+        <file>images/louma32h.png</file>
+        <file>pages/CornerClock.qml</file>
+        <file>pages/UtilityButton.qml</file>
+        <file>sounds/AppError.wav</file>
+        <file>sounds/AppMouseClick.wav</file>
+        <file>sounds/AppMousePress.wav</file>
+        <file>sounds/AppMouseRelease.wav</file>
+    </qresource>
+</RCC>
