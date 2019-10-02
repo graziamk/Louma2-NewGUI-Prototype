@@ -2,18 +2,17 @@ import QtQuick 2.13
 import QtQuick.Controls 2.13
 
 Page {
-    width: 600
-    height: 400
 
-    header: Label {
-        text: qsTr("Operator Page")
-        font.pixelSize: Qt.application.font.pixelSize * 1.5
-        padding: 10
+    Image {
+        id: image
+        antialiasing: true
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+
+        source: "qrc:///images/P01-Operator.png"
     }
 
-
-    Label {
-        text: qsTr("This is the Operator Page")
-        anchors.centerIn: parent
-    }    
+    background: Rectangle {
+    color: "#999977"
+    }
 }

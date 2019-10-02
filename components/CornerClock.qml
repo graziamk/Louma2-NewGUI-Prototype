@@ -1,6 +1,6 @@
 import QtQuick 2.12
 
-Rectangle {
+CustomRect1 {
     id: rectCornerClock
 
     // currently just using the default locale
@@ -16,10 +16,12 @@ Rectangle {
     anchors.bottomMargin: ( 10 / 410 ) * parent.width
     anchors.leftMargin: anchors.bottomMargin
 
-    border.color: "#818141"
-    border.width: ( height + width ) / 45
+    //border.color: "#818141"
+    //border.width: ( height + width ) / 45
 
     //DropShadow {}
+
+    /*
 
     Rectangle {
         id: rightBorder
@@ -55,7 +57,9 @@ Rectangle {
             bottom: parent.bottom
             top: parent.top
         }
+
     }
+        */
     Text {
         id: displayTime
         text: qsTr("text")

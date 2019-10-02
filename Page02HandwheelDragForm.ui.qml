@@ -2,18 +2,17 @@ import QtQuick 2.13
 import QtQuick.Controls 2.13
 
 Page {
-    width: 600
-    height: 400
-    wheelEnabled: false
 
-    header: Label {
-        text: qsTr("Handwheel Drag Page")
-        font.pixelSize: Qt.application.font.pixelSize * 1.5
-        padding: 10
+    Image {
+        id: image
+        antialiasing: true
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+
+        source: "qrc:///images/P02-Handwheel.png"
     }
 
-    Label {
-        text: qsTr("This is the Handweel Drag Page.")
-        anchors.centerIn: parent
+    background: Rectangle {
+    color: "#999977"
     }
 }

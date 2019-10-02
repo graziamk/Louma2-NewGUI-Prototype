@@ -2,18 +2,25 @@ import QtQuick 2.13
 import QtQuick.Controls 2.13
 
 Page {
-    width: 600
-    height: 400
+    id: page08_ErrorLogForm
 
-    header: Label {
-        text: qsTr("Error Log Page")
-        font.pixelSize: Qt.application.font.pixelSize
-        padding: 10
+    Image {
+        id: image
+        antialiasing: true
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+
+        source: "qrc:///images/P08-ErrorLog.png"
     }
 
-
-    Label {
-        text: qsTr("This is the Error Log Page")
-        anchors.centerIn: parent
+    background: Rectangle {
+    color: "#999977"
     }
 }
+
+
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/

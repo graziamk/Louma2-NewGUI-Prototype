@@ -10,12 +10,17 @@
         <file>Page04CameraForm.ui.qml</file>
         <file>Page05CopyNodeForm.ui.qml</file>
         <file>Page06TelescopeForm.ui.qml</file>
+        <file>Page07Planing.qml</file>
         <file>Page07PlaningForm.ui.qml</file>
+        <file>Page08ErrorLog.qml</file>
         <file>Page08ErrorLogForm.ui.qml</file>
         <file>Page09Utility.qml</file>
         <file>Page09UtilityForm.ui.qml</file>
         <file>Page10MenuForm.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>components/CornerClock.qml</file>
+        <file>components/CustomButton1.qml</file>
+        <file>components/UtilityButton.qml</file>
         <file>images/0012.svg</file>
         <file>images/1166B.svg</file>
         <file>images/5162.svg</file>
@@ -23,12 +28,22 @@
         <file>images/5352.svg</file>
         <file>images/5887.svg</file>
         <file>images/6057.svg</file>
-        <file>images/louma32h.png</file>
-        <file>pages/CornerClock.qml</file>
-        <file>pages/UtilityButton.qml</file>
+        <file>images/P00-Louma32h.jpg</file>
+        <file>images/P01-Operator.png</file>
+        <file>images/P02-Handwheel.png</file>
+        <file>images/P03-Lens.png</file>
+        <file>images/P04-Camera.png</file>
+        <file>images/P05-CopyNode.png</file>
+        <file>images/P06-Telescope.png</file>
+        <file>images/P07-Planing.png</file>
+        <file>images/P08-ErrorLog.png</file>
+        <file>images/P09-Utility.png</file>
+        <file>images/P10-Menu.png</file>
         <file>sounds/AppError.wav</file>
         <file>sounds/AppMouseClick.wav</file>
         <file>sounds/AppMousePress.wav</file>
         <file>sounds/AppMouseRelease.wav</file>
+        <file>components/CustomRect1.qml</file>
+        <file>components/UtilDrawer.qml</file>
     </qresource>
 </RCC>

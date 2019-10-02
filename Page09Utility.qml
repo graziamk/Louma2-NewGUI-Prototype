@@ -1,82 +1,84 @@
 import QtQuick 2.12
-import QtQml.Models 2.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Layouts 1.12
-
+import QtQml.Models 2.13
 
 Page09UtilityForm {
+    id: page09_Utility
 
-    property bool sbState
-    property bool acState
+    property alias nodeModel: nodeModel
 
-    function setScreenBrightness(sbState) {
-        if (!acState) {
+    //background: Rectangle { color: "#FFFFFF" }
+/*
+    background: Image {
+        id: image
+        antialiasing: true
+        anchors.fill: parent
+        fillMode: Image.Stretch
 
-            if (sbState) {
-                rowUtilityScreenLvl1.visible = false
-                rectDeviceDescription.visible = false
-                itemScreenBrightness.visible = true
-            } else {
-                rowUtilityScreenLvl1.visible = true
-                rectDeviceDescription.visible = true
-                itemScreenBrightness.visible = false
-            }
+        opacity: 0.3
 
-        } else {
-            errorSound.play()
-            console.log("Cannot open 'Screen Brightness Panel' while 'Audio Control Panel' is open!")
-        }
+        z: 10
+
+        source: "qrc:///images/P09-Utility.png"
     }
 
-    utilBtnDispBrightness.onClicked: {
-        if (!acState) {
-            sbState = true
-            setScreenBrightness(sbState)
-        } else {
-            errorSound.play()
-            console.log("Cannot open 'Screen Brightness Panel' while 'Audio Control Panel' is open!")
-        }
+*/
+/*
+    Connections {
+        target: audioSlider
+        onPositionChanged: { rootWindow.playVolume = audioSlider.position }
     }
-    utilBtnCloseSB.onClicked: {
-        sbState = false
-        setScreenBrightness(sbState)
+*/
+
+    cstmBtn1DispBrightness.onClicked: {
+        //ParentChange
+        brightnessControDrawer.open()
     }
 
-    function setAudioControl(acState) {
-        if (!sbState) {
-            if (acState) {
-                rowUtilityScreenLvl1.visible = false
-                rectDeviceDescription.visible = false
-                itemAudioCtrl.visible = true
-            } else {
-                rowUtilityScreenLvl1.visible = true
-                rectDeviceDescription.visible = true
-                itemAudioCtrl.visible = false
-            }
-        } else {
-            errorSound.play()
-            console.log("Cannot open 'Audio Control Panel' while 'Screen Brightness Panel' is open!")
-        }
-    }
+    cstmBtn1AudioCtrl.onClicked: audioControlDrawer.open()
 
-    utilBtnAudioCtrl.onClicked: {
-        if (!sbState) {
-            acState = true
-            setAudioControl(acState)
-        } else {
-            errorSound.play()
-            console.log("Cannot open 'Audio Control Panel' while 'Screen Brightness Panel' is open!")
-        }
-    }
-
-    utilBtnCloseAudioCtrl.onClicked: {
-        acState = false
-        setAudioControl(acState)
-    }
-
-    utilBtnDoneWithUP.onClicked: {
+    cstmBtn1ClosePage09.onClicked: {
         swipeView.setCurrentIndex(0) // return to Splash Screen @ (index 0)
     }
 
+    audioControlDrawer.onSliderPositionChanged: {
+        rootWindow.playVolume = audioControlDrawer.sliderPosition
+    }
+
+
+
+    DelegateModel {
+        id: nodeModel
+
+        model: ListModel {
+            ListElement { nodeName: "Console" }
+            ListElement { nodeName: "System" }
+            ListElement { nodeName: "Pan" }
+            ListElement { nodeName: "Tilt" }
+            ListElement { nodeName: "Roll" }
+            ListElement { nodeName: "Leveling" }
+            ListElement { nodeName: "Telescope" }
+            ListElement { nodeName: "Altitude" }
+            ListElement { nodeName: "Azimuth" }
+            ListElement { nodeName: "Dolly" }
+            ListElement { nodeName: "QTerm" }
+        }
+
+        delegate: Component  {
+            Text {
+                text: nodeName
+                font.pixelSize: Math.round(page09root.utilPageFontsize1 * 1.35)
+                font.family: rootWindow.fontFamUI2
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
+            }
+        }
+    }
+
 }
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/

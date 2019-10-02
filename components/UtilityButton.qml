@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.12
 
 Rectangle {
@@ -10,8 +11,14 @@ Rectangle {
     property alias ubText: textUB.text
     property alias ubID: itemState.ubMyID
 
-    signal clicked()
+    property int offset: Math.round(Math.min(page09root.lrgBtnWidth,page09root.lrgBtnHeight)/22)
+    property int myRadius: Math.round(Math.min(utilityButton.width,utilityButton.height)/3.5)
 
+    radius: myRadius
+    //border.width: offset  // commented as we're replacing this with shadowing effects
+
+    signal clicked()
+    
     Item {
         id: itemState
         property bool toggable: false
@@ -23,15 +30,52 @@ Rectangle {
         property string origText
         property string ubMyID
     }
-
+    
     color: itemState.origColor
 
-    radius: Math.round(Math.min(utilityButton.width,utilityButton.height)/3.5)
+    Rectangle { // draws the outter shadow/highlight
+        id: sourceOutter;
+        radius: myRadius
+        antialiasing: true;
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "black"; }
+            GradientStop { position: 0.5; color: "transparent"; }
+            GradientStop { position: 1.0; color: "white"; }
+        }
+        anchors {
+            fill: parent;
+            margins: -offset;
+        }
+    }
 
 
-        border.width: radius/10
-        border.color: "black"
-/*
+    Rectangle { // mask for outer 3D effect
+        id: maskOutter;
+        color: "transparent";
+        radius: myRadius;
+        antialiasing: true;
+        border {
+            width: offset;
+            color: "black";
+        }
+        anchors.fill: sourceOutter;
+    }
+
+    OpacityMask { // outter effect
+        opacity: 0.65;
+        source: ShaderEffectSource {
+            sourceItem: sourceOutter;
+            hideSource: true;
+        }
+        maskSource: ShaderEffectSource {
+            sourceItem: maskOutter;
+            hideSource: true;
+        }
+        anchors.fill: sourceOutter;
+    }
+
+
+    /*
     LinearGradient {
         anchors.fill: parent
         start: Qt.point(0,0)
@@ -53,7 +97,7 @@ Rectangle {
     }
 */
     //    property color origColor: utilityButton.color
-
+    
     Text {
         id: textUB
         width: parent.width
@@ -61,64 +105,65 @@ Rectangle {
         anchors.centerIn: parent
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.family: "Helvetica"
+        font.family: rootWindow.fontFamUI2
         // A 1-inch font is size 72. There are 25.4 mm in an inch. So there are ~2.835 points per mm
         // We also want our font size to be 1/2 of window height, so:
-        font.pointSize: rectUtilityPage.utilPageFontsize1
-        fontSizeMode: Text.Fit //investigate font sizing
+        font.pixelSize: (height == page09root.lrgBtnHeight) ? page09root.utilPageFontsize1 : page09root.utilPageFontsize1 * 1.15
+        fontSizeMode: Text.FixedSize //investigate font sizing
+        lineHeight: 0.85
         wrapMode: Text.WordWrap
         bottomPadding: Math.round(parent.height / 25)
-        rightPadding: Math.round(rectUtilityPage.smallVspacing / 2)
-        leftPadding: Math.round(rectUtilityPage.smallVspacing / 2)
-
+        rightPadding: Math.round(page09root.smallVspacing / 2)
+        leftPadding: Math.round(page09root.smallVspacing / 2)
+        
         text: "Undefined"
     }
-
+    
     MouseArea {
         id: ubMA
         anchors.fill: parent
-
+        
         onClicked: {
             if (itemState.firstRun) { itemState.firstRun = false; itemState.origText = textUB.text }
             console.log("rectangle color is: " + parent.color)
             utilityButton.clicked()
             if (itemState.toggable) {
-
+                
                 if (itemState.isToggled) {
                     itemState.isToggled = false
                     textUB.text = itemState.origText
                     saBtnUp.start()
-                    } else {
+                } else {
                     itemState.isToggled = true
                     textUB.text = itemState.addText
                     saBtnDown.start()
                 }
-
+                
             } else {
                 saBtnClick.start()
             }
         }
-
+        
         onPressed: mousePressSound.play()
     }
-
+    
     SequentialAnimation on color {
         id: saBtnClick
         loops: 1
         ColorAnimation { to: "#E0E0E0"; duration: 50 }
         ColorAnimation { to: utilityButton.color ; duration: 50 }
     }
-
+    
     SequentialAnimation on color {
         id: saBtnDown
         loops: 1
         ColorAnimation { to: itemState.altColor ; duration: 50 }
     }
-
+    
     SequentialAnimation on color {
         id: saBtnUp
         loops: 1
         ColorAnimation { to: itemState.origColor ; duration: 50 }
     }
-
+    
 }
