@@ -20,6 +20,9 @@
         <file>qtquickcontrols2.conf</file>
         <file>components/CornerClock.qml</file>
         <file>components/CustomButton1.qml</file>
+        <file>components/CustomButton2.qml</file>
+        <file>components/SunkenRectangle.qml</file>
+        <file>components/UtilDrawer.qml</file>
         <file>components/UtilityButton.qml</file>
         <file>images/0012.svg</file>
         <file>images/1166B.svg</file>
@@ -39,11 +42,13 @@
         <file>images/P08-ErrorLog.png</file>
         <file>images/P09-Utility.png</file>
         <file>images/P10-Menu.png</file>
+        <file>sounds/AppChangeVolumeBeep.wav</file>
         <file>sounds/AppError.wav</file>
-        <file>sounds/AppMouseClick.wav</file>
-        <file>sounds/AppMousePress.wav</file>
-        <file>sounds/AppMouseRelease.wav</file>
-        <file>components/CustomRect1.qml</file>
-        <file>components/UtilDrawer.qml</file>
+        <file>sounds/UI_ButtonClick.wav</file>
+        <file>sounds/UI_ButtonPress.wav</file>
+        <file>sounds/UI_ButtonRelease.wav</file>
+        <file>singletons/GlobalProperties.qml</file>
+        <file>singletons/GlobalSounds.qml</file>
+        <file>singletons/qmldir</file>
     </qresource>
 </RCC>

@@ -1,0 +1,2 @@
+singleton GlobalProperties 1.0 GlobalProperties.qml
+singleton GlobalSounds 1.0 GlobalSounds.qml

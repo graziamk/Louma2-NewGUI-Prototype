@@ -3,14 +3,16 @@ import QtQuick.Controls 2.13
 import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.13
 
+import "../singletons/."
+
 Drawer {
     id: utilDrawer
 
     visible: false
 
     // default height
-    height: page09root.largeVspacing + page09root.firstRowHeight
-            + page09root.smallVspacing + page09root.secondRowHeight
+    height: GlobalProperties.spacingV_10 + GlobalProperties.rowH_75
+            + GlobalProperties.spacingV_5 + GlobalProperties.rowH_29
 
     // default width
     width: parent.width
@@ -33,21 +35,14 @@ Drawer {
     // to the position of the slider (which always varies from 0 to 1)
     property alias  sliderMin: utilSlider.from
     property alias sliderMax: utilSlider.to
-
-    //property int minVal
-    //property int maxVal
+    // make the principal outputs of the slider available:
+    property alias sliderPosition: utilSlider.position
+    property alias sliderValue: utilSlider.value
 
     function setSliderRange(minVal, maxVal) {
         sliderMin = minVal
         sliderMax = maxVal
     }
-
-    // make the principal outputs of the slider available:
-    property alias sliderPosition: utilSlider.position
-    property alias sliderValue: utilSlider.value
-
-    //property string buttonText
-    //property string buttonAltText
 
     function setMiddleButton(buttonText, buttonAltText) {
         if (buttonAltText) {
@@ -70,15 +65,15 @@ Drawer {
     Label {
         id: sliderLabel
         width: parent.width
-        height: page09root.smallBtnHeight
+        height: GlobalProperties.btnHeight25
 
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: page09root.largeHspacing
+        anchors.leftMargin: GlobalProperties.spacingH_10
 
         fontSizeMode: Text.FixedHeight
         elide: Text.ElideRight
-        font.pixelSize: Math.round(page09root.utilPageFontsize1 * 1.20)
+        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.20)
         wrapMode: Text.NoWrap
         horizontalAlignment: Text.AlignLeft
         text: "Undefined:"
@@ -88,13 +83,13 @@ Drawer {
         id: sliderBaseRect
         //color: "#EAEAEA"
 
-        width: utilDrawer.width - (page09root.smallHspacing * 2)
+        width: utilDrawer.width - (GlobalProperties.spacingH_5 * 2)
         height: parent.height / 2.5
-        radius: Math.round((page09root.largeHspacing + page09root.largeVspacing) / 12)
+        radius: Math.round((GlobalProperties.spacingH_10 + GlobalProperties.spacingV_10) / 12)
 
         anchors.top: sliderLabel.bottom
         anchors.left: sliderLabel.left
-        anchors.leftMargin: (page09root.smallVspacing-page09root.largeHspacing)
+        anchors.leftMargin: (GlobalProperties.spacingV_5-GlobalProperties.spacingH_10)
 
         Item {
             height: utilSlider.height
@@ -103,7 +98,13 @@ Drawer {
 
             Slider {
                 id: utilSlider
-                value: 0.5
+
+                Component.onCompleted: {
+                    // Value should be overriden by caller; possibly initialized to current system values
+                    sliderValue = (sliderMax - sliderMin)/2
+                }
+
+                stepSize: 0.05
 
                 background: Rectangle {
                     x: utilSlider.leftPadding
@@ -139,14 +140,14 @@ Drawer {
 
     CustomButton1 {
         id: closeDrawerCstmBtn1
-        width: page09root.lrgBtnWidth
-        height: page09root.smallBtnHeight
+        width: GlobalProperties.btnWidth85
+        height: GlobalProperties.btnHeight25
 
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
-        anchors.rightMargin: page09root.largeHspacing
-        anchors.bottomMargin: page09root.largeVspacing
+        anchors.rightMargin: GlobalProperties.spacingH_10
+        anchors.bottomMargin: GlobalProperties.spacingV_10
 
         text: "Close"
 
@@ -155,40 +156,41 @@ Drawer {
 
     CustomButton1 {
         id: middleCstmBtn1
-        width: page09root.lrgBtnWidth
-        height: page09root.smallBtnHeight
+        width: GlobalProperties.btnWidth85
+        height: GlobalProperties.btnHeight25
         visible: false
 
         anchors.right: closeDrawerCstmBtn1.left
         anchors.bottom: parent.bottom
 
-        anchors.rightMargin: page09root.largeHspacing
-        anchors.bottomMargin: page09root.largeVspacing
+        anchors.rightMargin: GlobalProperties.spacingH_10
+        anchors.bottomMargin: GlobalProperties.spacingV_10
 
         text: "undefined"
     }
 
     CustomButton1 {
         id: leftCstmBtn1
-        width: page09root.lrgBtnWidth
-        height: page09root.smallBtnHeight
+        width: GlobalProperties.btnWidth85
+        height: GlobalProperties.btnHeight25
         visible: false
 
         anchors.right: middleCstmBtn1.left
         anchors.bottom: parent.bottom
 
-        anchors.rightMargin: page09root.largeHspacing
-        anchors.bottomMargin: page09root.largeVspacing
+        anchors.rightMargin: GlobalProperties.spacingH_10
+        anchors.bottomMargin: GlobalProperties.spacingV_10
 
         text: "undefined"
     }
 
     // remove this rectangle for production;
     // it's just here to show Mark what a button with 0 offset would look like
+    /*
     Rectangle {
         id: transparentBorderRect
-        width: page09root.lrgBtnWidth
-        height: page09root.smallBtnHeight
+        width: GlobalProperties.btnWidth85
+        height: GlobalProperties.btnHeight25
         color: "lightgray"
 
         visible: (!middleCstmBtn1.visible) ? true : false
@@ -196,8 +198,8 @@ Drawer {
         anchors.bottom: parent.bottom
         anchors.right:  closeDrawerCstmBtn1.left
 
-        anchors.rightMargin: page09root.largeHspacing
-        anchors.bottomMargin: page09root.largeVspacing
+        anchors.rightMargin: GlobalProperties.spacingH_10
+        anchors.bottomMargin: GlobalProperties.spacingV_10
 
         radius: 10
 
@@ -212,4 +214,5 @@ Drawer {
             transparentBorder: true
         }
     }
+    */
 }

@@ -50,11 +50,35 @@ import "../singletons/."
 T.Button {
     id: control
 
-    property color dropShadowColor: GlobalProperties.btnGreen
+    property color lightingColorChecked: GlobalProperties.btnGreen
+    property color lightingColorUnChecked: Qt.rgba(0, 0, 0, 0.5)
+
     property real myRadius: (Math.min(width, height)/3.5)
 
+    function setEffectsColors(colorChecked,colorUnChecked) {
+        lightingColorChecked = colorChecked;
+        lightingColorUnChecked = colorUnChecked;
+    }
+/*
     function setBackgroundColor(newColor) {
+        // This sets the color of the background behind the text
         rectBackground.color = newColor;
+    }
+
+    function setBorderColor(newColor) {
+        rectBackground.border.color = newColor;
+    }
+
+    function setBorderWidth(newWidth) {
+        rectBackground.border.width = newWidth;
+    }
+*/
+    function setOpacity(newOpacity) {
+        opacity = newOpacity;
+    }
+
+    Component.onCompleted: {
+        checked = false;
     }
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
@@ -83,7 +107,7 @@ T.Button {
     //icon.color: control.checked || control.highlighted ? control.palette.brightText :
     //            control.flat && !control.down ? (control.visualFocus ? control.palette.highlight : control.palette.windowText) : control.palette.buttonText
 
-    /*
+/*
     contentItem: IconLabel {
         spacing: control.spacing
         mirrored: control.mirrored
@@ -103,7 +127,7 @@ T.Button {
         implicitHeight: 40
         visible: !control.flat || control.down || control.checked || control.highlighted
         color: Color.blend(control.checked || control.highlighted ? control.palette.dark : control.palette.button,
-                           control.palette.mid, control.down ? 0.5 : 0.0)
+                                                                    control.palette.mid, control.down ? 0.5 : 0.0)
         border.color: control.palette.highlight
         border.width: control.visualFocus ? 2 : 0
 
@@ -120,7 +144,7 @@ T.Button {
             samples: 16
             spread: 0.4
             source: rectBackground
-            color: (control.checked) ? dropShadowColor : Qt.rgba(0, 0, 0, 0.5) //Material.dropShadowColor
+            color: (control.checked) ? lightingColorChecked : lightingColorUnChecked //Material.lightingColorChecked
             //color: control.visualFocus ? "#330066ff" : "#aaaaaa"
             transparentBorder: true
         }
@@ -151,8 +175,7 @@ T.Button {
 
         elide: Text.ElideRight ///////// Need to check if I should mess with this. What is elide again?
 
-        color: control.checked || control.highlighted ? dropShadowColor :
-                                                        control.flat && !control.down ? (control.visualFocus ? control.palette.highlight : control.palette.windowText) : control.palette.buttonText
+        color: control.checked || control.highlighted ? lightingColorChecked : lightingColorUnChecked
 
         font.family:  GlobalProperties.fontFamUI2
         font.pixelSize: (height == GlobalProperties.btnHeight35) ? GlobalProperties.fontSize1 : GlobalProperties.fontSize1 * 1.167
@@ -161,19 +184,11 @@ T.Button {
         maximumLineCount: 2
         wrapMode: Text.WordWrap
         bottomPadding: Math.round(parent.height / 25)
-        //        rightPadding: Math.round(GlobalProperties.spacingV_5 / 2)
-        //        leftPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+//        rightPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+//        leftPadding: Math.round(GlobalProperties.spacingV_5 / 2)
 
     }
 
-    onPressed:  {
-
-        if ( GlobalProperties.audioMute ) {
-            console.log("Mouse press muted");
-        } else {
-            GlobalSounds.mousePressSound.play() ;
-            console.log("GlobalSounds.mousePressSound.play() invoked.");
-        }
-    }
+    onPressed:  ( !GlobalProperties.audioMute ) ? GlobalSounds.mousePressSound.play() : console.log("Mouse press muted")
 
 }

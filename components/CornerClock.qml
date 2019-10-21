@@ -1,27 +1,42 @@
 import QtQuick 2.12
+import QtGraphicalEffects 1.13
 
-CustomRect1 {
-    id: rectCornerClock
+import "qrc:///singletons/"
 
-    // currently just using the default locale
-    // should probably change this so that there is a config menu where we can set the locale
-    // and reference that value here.
-    property var locale: Qt.locale()
+SunkenRectangle {
+    id: sunkenRectOuter
 
-    color: "#BBBB77"
-    width: ( 60 / 410 ) * parent.width
-    height: ( 24 / 240 ) * parent.height
+    color: GlobalProperties.fieldBgColor
+    width: GlobalProperties.btnWidth60 //( 60 / 410 ) * screenWidth
+    height: GlobalProperties.btnHeight24 //( 24 / 240 ) * screenHeight
+
     anchors.bottom: parent.bottom
     anchors.left: parent.left
-    anchors.bottomMargin: ( 10 / 410 ) * parent.width
-    anchors.leftMargin: anchors.bottomMargin
+    anchors.bottomMargin: GlobalProperties.spacingV_10 //( 10 / 410 ) * screenHeight
+    anchors.leftMargin: GlobalProperties.spacingH_10
 
-    //border.color: "#818141"
-    //border.width: ( height + width ) / 45
+    Rectangle {
+        id: rectCornerClock
 
-    //DropShadow {}
+        // currently just using the default locale
+        // should probably change this so that there is a config menu where we can set the locale
+        // and reference that value here.
+        property var locale: Qt.locale()
 
-    /*
+        color: GlobalProperties.fieldBgColor
+
+        anchors {
+            fill: parent;
+            margins: GlobalProperties.sunkenDepth;
+        }
+
+
+        //border.color: "#818141"
+        //border.width: ( height + width ) / 45
+
+        //DropShadow {}
+
+        /*
 
     Rectangle {
         id: rightBorder
@@ -60,28 +75,33 @@ CustomRect1 {
 
     }
         */
-    Text {
-        id: displayTime
-        text: qsTr("text")
-        width: parent.width
+        Text {
+            id: displayTime
+            text: qsTr("text")
+            width: parent.width
 
 
-        padding: 12
-        minimumPointSize: 7
-        font.pointSize: parent.height / 3.25
-        anchors.centerIn: parent
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        fontSizeMode: Text.Fit
+            font.family: GlobalProperties.fontFamUI1
+            font.weight: Font.Medium
+            padding: 12
+            minimumPointSize: 7
+            font.pointSize: Math.round(GlobalProperties.fontSize1*14/12) //fontSize1
+            anchors.centerIn: parent
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            fontSizeMode: Text.FixedSize
+            clip: true
 
-        function timeChanged() {
-            var date = new Date;
-            displayTime.text = date.toLocaleTimeString(rectCornerClock.locale,"h:mm ap")
-        }
+            function timeChanged() {
+                var date = new Date;
+                displayTime.text = date.toLocaleTimeString(rectCornerClock.locale,"h:mm ap")
+            }
 
-        Timer {
-            interval: 100; running: true; repeat: true;
-            onTriggered: parent.timeChanged()
+            Timer {
+                interval: 100; running: true; repeat: true;
+                onTriggered: parent.timeChanged()
+            }
         }
     }
 }

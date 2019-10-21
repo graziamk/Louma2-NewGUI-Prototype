@@ -6,12 +6,29 @@ import QtQuick.Controls.Material 2.13
 
 import QtMultimedia 5.13
 
-import "./components"
-import "./images"
+import "qrc:///components"
+import "qrc:///images"
+
+import "singletons/."
 
 ApplicationWindow {
     id: rootWindow
-    title: qsTr("Louma2 Console")
+
+    property alias mainTabBar: mainTabBar
+    property alias mainSwipeView: mainSwipeView
+/*
+    property alias cstmBtn2CameraPower: cstmBtn2CameraPower
+    property alias cstmBtn2StartupCrane: cstmBtn2StartupCrane
+    property alias buttonContainerRect: buttonContainerRect
+*/
+//    property alias enableButtonContainerRect: enableButtonContainerRect
+
+    // DEVELOPMENT SETTINGS
+    // Use this setting to facilitate tests while keeping the code easier to maintain
+    property bool testBuild: true   // if set to 'true', the screen will not maximize and will be centered
+    // on the screen, with a gap from the borders as defined next.
+    property int testBorderY: 100   // define the vertical gap between the screen and the application's
+    // test window.  The horizontal gap will be proportional.
 
     // List here any properties defined in this QML Type will be available to children via the 'rootWindow' id.
     //property alias rootWindow: rootWindow
@@ -35,14 +52,6 @@ ApplicationWindow {
     //
     // Attached Methods
     // int angleBetween(a, Qt::ScreenOrientation b)
-
-
-    // DEVELOPMENT SETTINGS
-    // Use this setting to facilitate tests while keeping the code easier to maintain
-    property bool testBuild: true   // if set to 'true', the screen will not maximize and will be centered
-                                    // on the screen, with a gap from the borders as defined next.
-    property int testBorderY: 100   // define the vertical gap between the screen and the application's
-                                    // test window.  The horizontal gap will be proportional.
 
 
     // RUN ONCE BLOCK
@@ -78,67 +87,121 @@ ApplicationWindow {
             // visibility = Qt.WindowFullScreen
         }
 
+        // SET SCREEN/WINDOW-RELATED PARAMS
+        // They need to be reset whenever the window or screen changes
+        setScreenParams()
+
         // SET MATERIAL THEME, COLORS FOR THEME
         Material.theme = Material.Dark
         Material.background = Material.color(Material.Grey, Material.Shade500)
         Material.accent = Material.color(Material.Teal, Material.ShadeA200)
         //Material.foreground = Material.color(Material.BlueGrey, Material.ShadeA200)
 
+        // Begin operation at Page00
+        mainSwipeView.currentIndex = 0;
+
     }
 
-    // Now find out the Pixel Density
-    property real screenDPmm: Screen.pixelDensity //in pixels per mm
-
-    // Create parameters to be re-used multiple times.  Everytime I need to know
-    // how big my working screen is, I should refer to these two:
-    //property int screenHeight: Screen.height // in pixels
-    //property int screenWidth: Screen.width // in pixels
-    property int screenHeight: rootWindow.height-tabBar.height // in pixels
-    property int screenWidth: rootWindow.width // in pixels
-
-
-    property string fontFamUI1: "Segoe UI"
-    property string fontFamUI2: "Helvetica"
-
-
-    // SET AUDIO
-    // Set Volume
-    property real playVolume: 0.5   // Ideally, I should be initializing playVolume to the System's current volume
-                                    // However, QML has no access to the native resources (unless we use their
-                                    // paid-for embedded suite).  Community release requires a C++ implementation
-                                    // to tie together QML with system properties such as Volume and Brightness.
-                                    // The QML tie-in will be left to a future improvement for now.
-
-    // Set Mouse Sounds
-    SoundEffect {
-        id: mouseClickSound
-        source: "qrc:///sounds/AppMouseClick.wav"
-        volume: playVolume
-    }
-    SoundEffect {
-        id: mousePressSound
-        source: "qrc:///sounds/AppMousePress.wav"
-        volume: playVolume
-    }
-    SoundEffect {
-        id: mouseReleaseSound
-        source: "qrc:///sounds/AppMouseRelease.wav"
-        volume: playVolume
-    }
-    SoundEffect {
-        id: errorSound
-        source: "qrc:///sounds/AppError.wav"
-        volume: playVolume*0.75 // this wav is from a different source and uses a higher relative volume
+    onScreenChanged: {
+        console.log("onScreenChanged Triggered");
+        console.log("Old screen width, height = " +
+                    GlobalProperties.screenWidth + ", " +
+                    GlobalProperties.screenHeight)
+        setScreenParams()
+        console.log("New screen width, height = " +
+                    GlobalProperties.screenWidth + ", " +
+                    GlobalProperties.screenHeight)
     }
 
+    onHeightChanged: {
+        setScreenParams()
+    }
 
+    onWidthChanged: {
+        setScreenParams()
+    }
+
+    function setScreenParams (){
+        // SET SCREEN/WINDOW-RELATED PARAMS
+        // Now find out the Pixel Density
+        GlobalProperties.setScreenDPmm(Screen.pixelDensity);
+
+        // Create parameters to be re-used multiple times.  Everytime I need to know
+        // how big my working screen is, I should refer to these two:
+        GlobalProperties.setScreenHeight(rootWindow.height-mainTabBar.height)// in pixels
+        GlobalProperties.setScreenWidth(rootWindow.width) // in pixels
+    }
+
+    function leaveSplashScreen() {
+        mainSwipeView.currIDX = 9;  //set back to 1 after debugging
+
+    }
+
+    function goToSplashScreen() {
+        mainSwipeView.currIDX = 0;
+    }
+
+    function enableTabBar(myBool) {
+        mainTabBar.enabled = myBool;
+    }
+
+    function enableSwipeView(myBool) {
+        mainSwipeView.enabled = myBool;
+    }
+
+    function powerOffCrane() {
+        GlobalProperties.cranePowered = false;
+        cstmBtn2StartupCrane.toggle();
+        goToSplashScreen();
+    }
+
+    function enableButtonContainerRect() {
+        myTimer.start();
+    }
+
+    function disableButtonContainerRect() {
+        buttonContainerRect.enabled = false;
+        buttonContainerRect.visible = false;
+    }
     // The main QML
+
+    title: qsTr("Louma2 Console")
+
+    Timer {
+        id: myTimer
+
+        interval: 700
+
+        onTriggered: {
+        buttonContainerRect.enabled = true;
+        buttonContainerRect.visible = true;
+        }
+    }
+
     SwipeView {
-        id: swipeView
+        id: mainSwipeView
+
+        property alias currIDX: mainSwipeView.currentIndex
+
         anchors.fill: parent
-        currentIndex: tabBar.currentIndex
+        currentIndex: mainTabBar.currentIndex
+
+        enabled: GlobalProperties.cranePowered
+
+        onCurrentIndexChanged: {
+            console.log("mainSwipeView.currentIndex = " + currentIndex)
+            if (currentIndex == 0) {
+                enableButtonContainerRect();
+            } else {
+                disableButtonContainerRect();
+            }
+        }
 
         Page00SplashScreenForm {
+            id: page00root
+
+            property alias page00root: page00root
+
         }
 
         Page01OperatorForm {
@@ -170,26 +233,15 @@ ApplicationWindow {
         Page09Utility {
             id: page09root
 
-            property alias page09_Root: page09root
+            property alias page09root: page09root
 
-            readonly property int lrgBtnWidth: Math.round((85 / 320) * screenWidth)
-            readonly property int lrgBtnHeight: Math.round((35 / 240) * screenHeight)
-            readonly property int smallBtnWidth: Math.round((60 / 320) * screenWidth)
-            readonly property int smallBtnHeight: Math.round((24 / 240) * screenHeight)
+            // Local Properties:
+            readonly property int nodeListWidth: Math.round((110 / 320) * GlobalProperties.screenWidth)
 
-            readonly property int smallHspacing: Math.round((5 / 320) * screenWidth)
-            readonly property int largeHspacing: Math.round((10 / 320) * screenWidth)
-            readonly property int smallVspacing: Math.round((5 / 240) * screenHeight)
-            readonly property int largeVspacing: Math.round((10 / 240) * screenHeight)
+            Component.onCompleted: {
+                audioControlDrawer.sliderValue = (audioControlDrawer.sliderMax-audioControlDrawer.sliderMin)/2
+            }
 
-            readonly property int firstRowHeight: Math.round((75 / 240) * screenHeight)
-            readonly property int secondRowHeight: Math.round((30 / 240) * screenHeight)
-            readonly property int thirdRowHeight: Math.round((75 / 240) * screenHeight)
-
-            readonly property int nodeListWidth: Math.round((110 / 320) * screenWidth)
-
-            readonly property int fontSize: 12
-            readonly property int utilPageFontsize1: screenHeight / 20
         }
 
         Page10MenuForm {
@@ -199,19 +251,23 @@ ApplicationWindow {
     }
 
     footer: TabBar {
-        id: tabBar
-        currentIndex: swipeView.currentIndex
+        id: mainTabBar
+        currentIndex: mainSwipeView.currentIndex
 
-        property real utilTabFontsize1: Math.round(tabBar.height / 4 )
-        property real utilTabBottomPad: Math.round(tabBar.height / 25)
-        property real utilTabSidePad: Math.round(tabBar.width / 20 )
+        property real utilTabfontSize1: Math.round(mainTabBar.height / 4 )
+        property real utilTabBottomPad: Math.round(mainTabBar.height / 25)
+        property real utilTabSidePad: Math.round(mainTabBar.width / 20 )
+
+        onCurrentIndexChanged: console.log("mainTabBar Current Index = " + currentIndex)
 
 
         // define the background (a rectangle set to the palette.shadow), and
         // explicitly set the inset (the border for the background) to 0.
         background: Rectangle {
-            color: tabBar.palette.shadow
+            color: mainTabBar.palette.shadow
         }
+
+        enabled: GlobalProperties.cranePowered
 
         topInset: 0
         bottomInset: 0
@@ -222,7 +278,7 @@ ApplicationWindow {
             visible: false
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -237,7 +293,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -251,7 +307,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -269,7 +325,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -287,7 +343,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -305,7 +361,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -323,7 +379,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -337,7 +393,7 @@ ApplicationWindow {
             //display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -351,7 +407,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -369,7 +425,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -381,7 +437,7 @@ ApplicationWindow {
 
             spacing: 1.5
 
-            //onClicked: swipeView.setCurrentIndex(8) // this didn't result in jumping to the 9th View (counting from 0), the SwipeView still
+            //onClicked: mainSwipeView.setCurrentIndex(8) // this didn't result in jumping to the 9th View (counting from 0), the SwipeView still
             // scrolled though the intervening views.  will look at disabling the animation, per Mark's comment.
 
         }
@@ -390,7 +446,7 @@ ApplicationWindow {
             id: tab10
 
             font.pixelSize: Qt.application.font.pixelSize * 1.5
-            font.family: fontFamUI1
+            font.family: GlobalProperties.fontFamUI1
             font.weight: Font.DemiBold
             font.letterSpacing: 0.55
 
@@ -401,4 +457,88 @@ ApplicationWindow {
         }
 
     }
+
+    Rectangle {
+        id: buttonContainerRect
+
+        z: 20
+
+        width: ((GlobalProperties.btnWidth80*2)+GlobalProperties.spacingH_10)
+        //height: (GlobalProperties.btnHeight50)
+        // using implicitHeight: (based on size of child objects [the buttons])
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: GlobalProperties.spacingV_10 * 4
+
+        CustomButton2 {
+            id: cstmBtn2CameraPower
+
+            onClicked: {
+                if (cstmBtn2CameraPower.checked) {
+                    GlobalProperties.cameraPowered = true;
+                } else {
+                    GlobalProperties.cameraPowered = false;
+                }
+            }
+
+            visible: parent.visible
+            enabled: parent.enabled
+
+            z: 40
+
+            width: GlobalProperties.btnWidth80
+            height: GlobalProperties.btnHeight45
+
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+
+            //anchors.right: cstmBtn2StartupCrane // generated warning or error
+            anchors.rightMargin: GlobalProperties.spacingH_10
+
+            lightingColorChecked: GlobalProperties.btnYellow
+            lightingColorUnChecked: GlobalProperties.btnGreen
+
+            checkable: true
+
+            text: (!cstmBtn2CameraPower.checked) ? "Power On Camera" : "Power Off Camera"
+        }
+
+        CustomButton2 {
+            id: cstmBtn2StartupCrane
+
+
+            onClicked: {
+                if (cstmBtn2StartupCrane.checked) {
+                    GlobalProperties.cranePowered = true;
+                    leaveSplashScreen();
+                } else {
+                    GlobalProperties.cranePowered = false;
+                }
+            }
+
+            visible: parent.visible
+            enabled: parent.enabled
+
+            z: 40
+
+            width: GlobalProperties.btnWidth80
+            height: GlobalProperties.btnHeight45
+
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            //anchors.left: cstmBtn2CameraPower // generated warning or error
+            anchors.leftMargin: GlobalProperties.spacingH_10
+
+            lightingColorChecked: GlobalProperties.btnYellow
+            lightingColorUnChecked: GlobalProperties.btnGreen
+
+            checkable: true
+
+            text:  (!cstmBtn2StartupCrane.checked) ? "Startup Crane" : "Power Off Crane"
+        }
+
+    }
+
 }

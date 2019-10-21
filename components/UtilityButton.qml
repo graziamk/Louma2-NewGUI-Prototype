@@ -3,6 +3,8 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.12
 
+import "qrc:///singletons/."
+
 Rectangle {
     id: utilityButton
     property alias isToggable: itemState.toggable
@@ -11,7 +13,7 @@ Rectangle {
     property alias ubText: textUB.text
     property alias ubID: itemState.ubMyID
 
-    property int offset: Math.round(Math.min(page09root.lrgBtnWidth,page09root.lrgBtnHeight)/22)
+    property int offset: Math.round(Math.min(GlobalProperties.btnWidth85,GlobalProperties.btnHeight35)/22)
     property int myRadius: Math.round(Math.min(utilityButton.width,utilityButton.height)/3.5)
 
     radius: myRadius
@@ -108,13 +110,13 @@ Rectangle {
         font.family: rootWindow.fontFamUI2
         // A 1-inch font is size 72. There are 25.4 mm in an inch. So there are ~2.835 points per mm
         // We also want our font size to be 1/2 of window height, so:
-        font.pixelSize: (height == page09root.lrgBtnHeight) ? page09root.utilPageFontsize1 : page09root.utilPageFontsize1 * 1.15
+        font.pixelSize: (height === GlobalProperties.btnHeight35) ? GlobalProperties.fontSize1 : GlobalProperties.fontSize1 * 1.15
         fontSizeMode: Text.FixedSize //investigate font sizing
         lineHeight: 0.85
         wrapMode: Text.WordWrap
         bottomPadding: Math.round(parent.height / 25)
-        rightPadding: Math.round(page09root.smallVspacing / 2)
-        leftPadding: Math.round(page09root.smallVspacing / 2)
+        rightPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+        leftPadding: Math.round(GlobalProperties.spacingV_5 / 2)
         
         text: "Undefined"
     }
@@ -144,7 +146,7 @@ Rectangle {
             }
         }
         
-        onPressed: mousePressSound.play()
+        onPressed:  ( !GlobalProperties.audioMute ) ? GlobalSounds.mousePressSound.play() : console.log("Mouse press muted")
     }
     
     SequentialAnimation on color {

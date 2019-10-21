@@ -8,13 +8,15 @@ import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 import QtGraphicalEffects 1.12
 
-import "./components"
+import "qrc:///components"
+
+//import GlobalProperties 1.0
+//import GlobalSounds 1.0
+
+import "singletons/."
 
 Page {
     id: page09_UtilityForm
-    z: -10
-    width: 600
-    height: 400
 
     property alias page09_UtilityForm: page09_UtilityForm
     property alias cstmBtn1ClosePage09: cstmBtn1ClosePage09
@@ -36,13 +38,17 @@ Page {
 
     property alias nodeListTumbler: nodeListTumbler
 
+    z: -10
+    width: 600
+    height: 400
+
     Text {
         id: txtUtilityPageFooter
-        font.family: rootWindow.fontFamUI2
-        font.pixelSize: page09root.utilPageFontsize1
+        font.family: GlobalProperties.fontFamUI2
+        font.pixelSize: GlobalProperties.fontSize1
         text: qsTr("IIR - 16Jan19")
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: page09root.smallVspacing
+        anchors.bottomMargin: GlobalProperties.spacingV_5
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
@@ -54,18 +60,18 @@ Page {
         anchors.fill: parent
         z: -1
 
-        anchors.rightMargin: page09root.largeHspacing
-        anchors.leftMargin: page09root.largeHspacing
-        anchors.topMargin: page09root.largeVspacing
-        anchors.bottomMargin: page09root.largeVspacing
+        anchors.rightMargin: GlobalProperties.spacingH_10
+        anchors.leftMargin: GlobalProperties.spacingH_10
+        anchors.topMargin: GlobalProperties.spacingV_10
+        anchors.bottomMargin: GlobalProperties.spacingV_10
 
         Rectangle {
             id: rectUtilDefault
             z: 0
             color: "transparent"
 
-            height: page09root.firstRowHeight + page09root.smallVspacing
-                    + page09root.secondRowHeight
+            height: GlobalProperties.rowH_75 + GlobalProperties.spacingV_5
+                    + GlobalProperties.rowH_29
 
             anchors.top: parent.top
             anchors.right: parent.right
@@ -75,25 +81,25 @@ Page {
                 id: rectUtilityScreenLvl1
                 color: "transparent"
 
-                height: page09root.firstRowHeight
+                height: GlobalProperties.rowH_75
 
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.left: parent.left
 
-                CustomRect1 {
+                SunkenRectangle {
                     id: rectComboBoxContainer
 
-                    color: "#F0F0F0"
+                    color: GlobalProperties.fieldBgColor
                     width: page09root.nodeListWidth
-                    radius: Math.round(
-                                (page09root.largeHspacing + page09root.largeVspacing) / 8)
+                    radius: (Math.min(GlobalProperties.btnWidth85, GlobalProperties.btnHeight35)/7)
 
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
 
-                    anchors.rightMargin: page09root.largeHspacing
+                    anchors.margins: GlobalProperties.myOffset
+                    anchors.rightMargin: GlobalProperties.spacingH_10 + GlobalProperties.myOffset
 
                     /*
                     Flickable {
@@ -115,7 +121,7 @@ Page {
                             highlightMoveVelocity: 50
                             focus: true
                             spacing: Math.round(
-                                         page09root.utilPageFontsize1 / 5)
+                                         GlobalProperties.fontSize1 / 5)
                             clip: true
                             currentIndex: -1
                         }
@@ -163,14 +169,14 @@ Page {
                                 id: nodeContainer
                                 width: parent.width
                                 height: Math.round(
-                                            page09root.utilPageFontsize1 * 1.3)
+                                            GlobalProperties.fontSize1 * 1.3)
                                 Column {
                                     Text {
                                         font.pixelSize: Math.round(
-                                                            page09root.utilPageFontsize1 * 1.35)
+                                                            GlobalProperties.fontSize1 * 1.35)
                                         font.family: rootWindow.fontFamUI2
                                         leftPadding: Math.round(
-                                                         page09root.smallVspacing / 2)
+                                                         GlobalProperties.spacingV_5 / 2)
 
                                         color: "Black"
                                         horizontalAlignment: Text.AlignHCenter
@@ -192,18 +198,19 @@ Page {
                         id: nodeListTumbler
 
                         anchors.fill: parent
+                        anchors.margins: GlobalProperties.sunkenDepth-GlobalProperties.myOffset
 
                         background: Item {
                             Rectangle {
-                                opacity: nodeListTumbler.enabled ? 0.2 : 0.1
-                                border.color: "#000000"
+                                opacity: 0 // nodeListTumbler.enabled ? 0.2 : 0.1
+                                border.color: GlobalProperties.fieldBgColor
                                 width: parent.width
                                 height: 1
                                 anchors.top: parent.top
                             }
 
                             Rectangle {
-                                opacity: nodeListTumbler.enabled ? 0.2 : 0.1
+                                opacity: 0 //nodeListTumbler.enabled ? 0.2 : 0.1
                                 border.color: "#000000"
                                 width: parent.width
                                 height: 1
@@ -257,17 +264,17 @@ Page {
 
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.leftMargin: page09root.largeHspacing
+                    anchors.leftMargin: GlobalProperties.spacingH_10
 
-                    rowSpacing: page09root.smallVspacing
-                    columnSpacing: page09root.largeHspacing
+                    rowSpacing: GlobalProperties.spacingV_5
+                    columnSpacing: GlobalProperties.spacingH_10
                     rows: 2
                     columns: 2
 
                     CustomButton1 {
                         id: cstmBtn1ShowNodeParams
-                        width: page09root.lrgBtnWidth
-                        height: page09root.lrgBtnHeight
+                        width: GlobalProperties.btnWidth85
+                        height: GlobalProperties.btnHeight35
                         //ubID: "btnShowNodeParameters" // If I do end up finding that there's a need to
                         // tag each button with an ID, uncomment and add
                         // the ubID property to the appropriate Button qml file.
@@ -276,56 +283,67 @@ Page {
 
                     CustomButton1 {
                         id: cstmBtn1RestartNode
-                        width: page09root.lrgBtnWidth
-                        height: page09root.lrgBtnHeight
+                        width: GlobalProperties.btnWidth85
+                        height: GlobalProperties.btnHeight35
                         //ubID: "btnRestartNode"
                         text: "Restart Node"
                     }
 
                     CustomButton1 {
                         id: cstmBtn1UpdateFw
-                        width: page09root.lrgBtnWidth
-                        height: page09root.lrgBtnHeight
+                        width: GlobalProperties.btnWidth85
+                        height: GlobalProperties.btnHeight35
                         //ubID: "btnUpdateFW"
                         text: "Update Firmware"
                     }
 
                     CustomButton1 {
                         id: cstmBtn1ClearHome
-                        width: page09root.lrgBtnWidth
-                        height: page09root.lrgBtnHeight
+                        width: GlobalProperties.btnWidth85
+                        height: GlobalProperties.btnHeight35
                         //ubID: "btnClearHome"
                         text: "Clear Home"
                     }
                 }
             }
 
-            CustomRect1 {
-                id: rectDeviceDescription
+            SunkenRectangle {
+                id: sunkenRectDeviceDescription
 
-                color: "#F0F0F0"
-                height: page09root.secondRowHeight
+                color: GlobalProperties.fieldBgColor
+                height: GlobalProperties.rowH_29
 
                 //width: Math.round((300 / 320) * utilityPage.width)
                 anchors.right: parent.right
                 anchors.left: parent.left
                 anchors.top: rectUtilityScreenLvl1.bottom
 
-                anchors.topMargin: page09root.smallVspacing
+                anchors.margins: GlobalProperties.myOffset
+                anchors.topMargin: GlobalProperties.myOffset + GlobalProperties.spacingV_5
 
-                radius: Math.round(
-                            (page09root.largeHspacing + page09root.largeVspacing) / 8)
+                radius: Math.min(GlobalProperties.btnWidth85, GlobalProperties.btnHeight35)/7
 
-                Text {
-                    id: name
-                    font.family: rootWindow.fontFamUI2
-                    font.pixelSize: Math.round(page09root.utilPageFontsize1 * 1.35)
-                    rightPadding: Math.round(page09root.smallVspacing / 2)
-                    leftPadding: Math.round(page09root.smallVspacing / 2)
-                    topPadding: Math.round(page09root.smallVspacing / 2)
-                    bottomPadding: Math.round(topPadding / 2)
+                Rectangle {
+                    id: rectDeviceDescription
 
-                    text: qsTr("Device Description")
+                    anchors.fill: parent
+                    anchors.margins: GlobalProperties.sunkenDepth
+                    radius: parent.radius
+
+                    Text {
+                        id: name
+                        font.family: GlobalProperties.fontFamUI2
+                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+
+                        anchors.fill: parent
+
+                        rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                        leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                        topPadding: Math.round(GlobalProperties.spacingV_5 /2 )
+                        bottomPadding: topPadding/2
+                        verticalAlignment: Text.AlignVCenter
+                        text: qsTr("Device Description")
+                    }
                 }
             }
         }
@@ -337,20 +355,20 @@ Page {
             anchors.right: parent.right
             anchors.left: parent.left
 
-            anchors.bottomMargin: page09root.smallVspacing
+            anchors.bottomMargin: GlobalProperties.spacingV_5
 
             rows: 2
-            rowSpacing: page09root.smallVspacing
+            rowSpacing: GlobalProperties.spacingV_5
             columns: 3
-            columnSpacing: page09root.largeHspacing
+            columnSpacing: GlobalProperties.spacingH_10
 
             layoutDirection: Qt.RightToLeft
             horizontalItemAlignment: Grid.AlignRight
 
             CustomButton1 {
                 id: cstmBtn1CameraPower
-                width: page09root.lrgBtnWidth
-                height: page09root.lrgBtnHeight
+                width: GlobalProperties.btnWidth85
+                height: GlobalProperties.btnHeight35
                 //ubID: "btnCameraPower"
                 checkable: true
                 text: (!checked) ? "Camera Power (Off)" : "Camera Power (On)"
@@ -358,8 +376,8 @@ Page {
 
             CustomButton1 {
                 id: cstmBtn1ServoPower
-                width: page09root.lrgBtnWidth
-                height: page09root.lrgBtnHeight
+                width: GlobalProperties.btnWidth85
+                height: GlobalProperties.btnHeight35
                 //ubID: "btnServoPower"
                 checkable: true
                 text: (!checked) ? "Servo Power (Off)" : "Servo Power (On)"
@@ -367,24 +385,24 @@ Page {
 
             CustomButton1 {
                 id: cstmBtn1PowerOffCrane
-                width: page09root.lrgBtnWidth
-                height: page09root.lrgBtnHeight
+                width: GlobalProperties.btnWidth85
+                height: GlobalProperties.btnHeight35
                 //ubID: "btnPowerOffCrane"
                 text: "Power-Off Crane"
             }
 
             CustomButton1 {
                 id: cstmBtn1DispBrightness
-                width: page09root.lrgBtnWidth
-                height: page09root.lrgBtnHeight
+                width: GlobalProperties.btnWidth85
+                height: GlobalProperties.btnHeight35
                 //ubID: "btnDisplayBrightness"
                 text: "Display Brightness"
             }
 
             CustomButton1 {
                 id: cstmBtn1AudioCtrl
-                width: page09root.lrgBtnWidth
-                height: page09root.lrgBtnHeight
+                width: GlobalProperties.btnWidth85
+                height: GlobalProperties.btnHeight35
                 //ubID: "btnAudioControl"
                 text: "Audio Control"
             }
@@ -403,13 +421,14 @@ Page {
 
             CustomButton1 {
                 id: cstmBtn1ClosePage09
-                width: page09root.smallBtnWidth
-                height: page09root.smallBtnHeight
+                width: GlobalProperties.btnWidth60
+                height: GlobalProperties.btnHeight24
 
                 Layout.alignment: Qt.AlignRight
 
                 //ubID: "btnDoneWithUP"
                 text: "Done"
+
             }
 
 
@@ -417,13 +436,18 @@ Page {
                 id: audioControlUtilDrawer
                 sliderLabel.text: "Set Note Volume:"
 
+                sliderMin: 0.2
+                sliderMax: 1
+
                 middleButton.visible: true
                 middleButton.checkable: true
+                middleButton.dropShadowColor: GlobalProperties.btnYellow
                 middleButton.text: (!middleButton.checked) ? "Error Mute" : "Audio Muted"
 
                 leftButton.visible: true
                 leftButton.checkable: true
-                leftButton.text: (!leftButton.checked) ? "Error Mute" : "Audio Muted"
+                leftButton.dropShadowColor: GlobalProperties.btnRed
+                leftButton.text: (!leftButton.checked) ? "Buttons Mute" : "Audio Muted"
             }
 
             UtilDrawer {
