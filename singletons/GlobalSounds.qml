@@ -10,6 +10,7 @@ Item {
     property alias mouseClickSound: mouseClickSound
     property alias mousePressSound: mousePressSound
     property alias mouseReleaseSound: mouseReleaseSound
+    property alias tumblerSelectSound: tumblerSelectSound
     property alias volumeChangeSound: volumeChangeSound
     property alias errorSound: errorSound
 
@@ -31,6 +32,12 @@ Item {
         id: mouseReleaseSound
         source: "qrc:///sounds/UI_ButtonRelease.wav"
         volume: GlobalProperties.audioVolume
+    }
+
+    SoundEffect {
+        id: tumblerSelectSound
+        source: "qrc:///sounds/UI_TumblerSelect.wav"
+        volume: GlobalProperties.audioVolume*0.6
     }
 
     SoundEffect {

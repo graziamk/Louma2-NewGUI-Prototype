@@ -25,7 +25,7 @@ ApplicationWindow {
 
     // DEVELOPMENT SETTINGS
     // Use this setting to facilitate tests while keeping the code easier to maintain
-    property bool testBuild: true   // if set to 'true', the screen will not maximize and will be centered
+    property bool testBuild: false  // if set to 'true', the screen will not maximize and will be centered
     // on the screen, with a gap from the borders as defined next.
     property int testBorderY: 100   // define the vertical gap between the screen and the application's
     // test window.  The horizontal gap will be proportional.
@@ -54,6 +54,9 @@ ApplicationWindow {
     // int angleBetween(a, Qt::ScreenOrientation b)
 
 
+    // Make the window frameless:
+    flags: Qt.FramelessWindowHint
+
     // RUN ONCE BLOCK
     // All start-up tasks should be put here; it will wait for  the screen to finish initializing
     // and all environment variables to be set-up.
@@ -80,11 +83,11 @@ ApplicationWindow {
             // The final release should be, per my understanding, full-screen and without borders
             // or window dressings, which I get from 'visible: true'.  During tests: a resizable screen.
             console.log("Setting 'visible' to 'true'.")
-            visible = true
+            // visible = true
 
             // If we want the release to have boders and ability to Maximize/Minimize, etc., comment the line
             // above 'visible = true', and uncomment the line below setting visibility to Qt.WindowFullScreen
-            // visibility = Qt.WindowFullScreen
+            visibility = Qt.WindowFullScreen
         }
 
         // SET SCREEN/WINDOW-RELATED PARAMS
@@ -96,9 +99,6 @@ ApplicationWindow {
         Material.background = Material.color(Material.Grey, Material.Shade500)
         Material.accent = Material.color(Material.Teal, Material.ShadeA200)
         //Material.foreground = Material.color(Material.BlueGrey, Material.ShadeA200)
-
-        // Begin operation at Page00
-        mainSwipeView.currentIndex = 0;
 
     }
 
@@ -133,12 +133,12 @@ ApplicationWindow {
     }
 
     function leaveSplashScreen() {
-        mainSwipeView.currIDX = 9;  //set back to 1 after debugging
+        mainSwipeView.incrementCurrentIndex() ;  //set back to 1 after debugging
 
     }
 
     function goToSplashScreen() {
-        mainSwipeView.currIDX = 0;
+        mainTabBar.setCurrentIndex(0);
     }
 
     function enableTabBar(myBool) {
@@ -151,8 +151,15 @@ ApplicationWindow {
 
     function powerOffCrane() {
         GlobalProperties.cranePowered = false;
-        cstmBtn2StartupCrane.toggle();
+        if (cstmBtn2StartupCrane.checked) {
+            cstmBtn2StartupCrane.toggle();
+        }
         goToSplashScreen();
+    }
+
+    function powerOnCrane() {
+        GlobalProperties.cranePowered = true;
+        leaveSplashScreen();
     }
 
     function enableButtonContainerRect() {
@@ -496,8 +503,8 @@ ApplicationWindow {
             //anchors.right: cstmBtn2StartupCrane // generated warning or error
             anchors.rightMargin: GlobalProperties.spacingH_10
 
-            lightingColorChecked: GlobalProperties.btnYellow
-            lightingColorUnChecked: GlobalProperties.btnGreen
+            lightingColorChecked: GlobalProperties.btnGreen
+            lightingColorUnChecked: GlobalProperties.btnYellow
 
             checkable: true
 
@@ -531,8 +538,8 @@ ApplicationWindow {
             //anchors.left: cstmBtn2CameraPower // generated warning or error
             anchors.leftMargin: GlobalProperties.spacingH_10
 
-            lightingColorChecked: GlobalProperties.btnYellow
-            lightingColorUnChecked: GlobalProperties.btnGreen
+            lightingColorChecked: GlobalProperties.btnGreen
+            lightingColorUnChecked: GlobalProperties.btnYellow
 
             checkable: true
 

@@ -23,6 +23,7 @@ Page {
     property alias itemUtilityPage: itemUtilityPage
     property alias rectUtilityScreenLvl1: rectUtilityScreenLvl1
     property alias rectDeviceDescription: rectDeviceDescription
+    property alias rectComboBoxContainer: rectComboBoxContainer
     property alias cstmBtn1CameraPower: cstmBtn1CameraPower
     property alias cstmBtn1ServoPower: cstmBtn1ServoPower
     property alias cstmBtn1PowerOffCrane: cstmBtn1PowerOffCrane
@@ -200,23 +201,28 @@ Page {
                         anchors.fill: parent
                         anchors.margins: GlobalProperties.sunkenDepth-GlobalProperties.myOffset
 
-                        background: Item {
+                        background: shaderItem
+
+                            /*
                             Rectangle {
-                                opacity: 0 // nodeListTumbler.enabled ? 0.2 : 0.1
-                                border.color: GlobalProperties.fieldBgColor
+                                id: topBgRect
+                                opacity: nodeListTumbler.enabled ? 0.2 : 0.1
+                                color: GlobalProperties.fieldBgColor
                                 width: parent.width
                                 height: 1
                                 anchors.top: parent.top
-                            }
 
+                            }
                             Rectangle {
-                                opacity: 0 //nodeListTumbler.enabled ? 0.2 : 0.1
-                                border.color: "#000000"
+                                id: btmBgRect
+                                opacity: nodeListTumbler.enabled ? 0.2 : 0.1
+                                color: GlobalProperties.fieldBgColor
                                 width: parent.width
                                 height: 1
                                 anchors.bottom: parent.bottom
                             }
-                        }
+                        */
+
 
 
                         contentItem: ListView {
@@ -228,18 +234,22 @@ Page {
                             preferredHighlightEnd: height / 2 + (height / nodeListTumbler.visibleItemCount / 2)
                             clip: true
                         }
-                        /*
-                        Rectangle {
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            y: Math.round(parent.height * 0.4)
-                            width: parent.width // Math.round(parent.width * 0.6)
-                            height: Math.round(parent.width * 0.1) //Math.round(parent.height / 75)
-                            color: "darkgray" //"#21be2b"
-                            opacity: 0.2
-                        }
-                        */
 
                         Rectangle {
+                            id: rectSelectionColoring
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            y: Math.round(parent.height * 0.4)
+                            //anchors.top: upperLineMarker.top
+                            //anchors.bottom: lowerLineMarker.bottom
+                            width: parent.width // Math.round(parent.width * 0.6)
+                            height: Math.round(parent.height * 0.2) // Math.round(parent.width * 0.1) //Math.round(parent.height / 75)
+                            color: "#a0f0f0" //"darkgray" //"#21be2b"
+                            opacity: 0.2
+                        }
+
+/*  // Remove Green Lines from Tumbler
+                        Rectangle {
+                            id: upperLineMarker
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: Math.round(parent.height * 0.4)
                             width: Math.round(parent.width * 0.6)
@@ -248,13 +258,14 @@ Page {
                         }
 
                         Rectangle {
+                            id: lowerLineMarker
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: Math.round(parent.height * 0.6)
                             width: Math.round(parent.width * 0.6)
                             height: Math.round(parent.height / 75)
                             color: "#21be2b"
                         }
-
+*/
                     }
 
                 }
@@ -387,7 +398,7 @@ Page {
                 id: cstmBtn1PowerOffCrane
                 width: GlobalProperties.btnWidth85
                 height: GlobalProperties.btnHeight35
-                //ubID: "btnPowerOffCrane"
+                //ubID: "btn"
                 text: "Power-Off Crane"
             }
 

@@ -47,6 +47,7 @@
         <file>sounds/UI_ButtonClick.wav</file>
         <file>sounds/UI_ButtonPress.wav</file>
         <file>sounds/UI_ButtonRelease.wav</file>
+        <file>sounds/UI_TumblerSelect.wav</file>
         <file>singletons/GlobalProperties.qml</file>
         <file>singletons/GlobalSounds.qml</file>
         <file>singletons/qmldir</file>

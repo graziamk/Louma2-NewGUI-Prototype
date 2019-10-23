@@ -1,5 +1,7 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.12
+import QtQuick 2.13
+import QtQuick.Controls 2.13
+import QtGraphicalEffects 1.13
+import QtQuick.Controls.Material 2.13
 import QtQml.Models 2.13
 
 //import GlobalProperties 1.0
@@ -10,6 +12,7 @@ Page09UtilityForm {
     id: page09_Utility
 
     property alias nodeModel: nodeModel
+    property alias shaderItem: shaderItem
 
     //background: Rectangle { color: "#FFFFFF" }
     /*
@@ -46,7 +49,7 @@ Page09UtilityForm {
     cstmBtn1ClosePage09.onClicked: {
         mainSwipeView.setCurrentIndex(1)
         mainTabBar.setCurrentIndex(1)   // return to Operator Screen @ (index 1)
-                                        // (per Mark's verbal instruction on 10/04?)
+        // (per Mark's verbal instruction on 10/04?)
     }
 
     cstmBtn1PowerOffCrane.onClicked: {
@@ -70,6 +73,15 @@ Page09UtilityForm {
 
     audioControlDrawer.middleButton.onCheckedChanged: {
         GlobalProperties.errorMute = audioControlDrawer.middleButton.checked
+    }
+
+    nodeListTumbler.onCurrentIndexChanged: {
+        if ( GlobalProperties.audioMute ) {
+            console.log("Tumbler selection sound muted");
+        } else {
+            GlobalSounds.tumblerSelectSound.play() ;
+            console.log("GlobalSounds.tumblerSelectSound.play() invoked.");
+        }
     }
 
     DelegateModel {
@@ -101,6 +113,26 @@ Page09UtilityForm {
         }
     }
 
+    Item {
+        id: shaderItem
+
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: parent.height/100  // this is a hack.  'anchors.fill: parent' should provide
+                                                // a perfect fit. I need to look into this when I have some
+                                                // time. Also, consider adding a gap and darkness between the
+                                                // SunkenRectangle inner border and the tumbler's outer border.
+            radius: rectComboBoxContainer.radius/1.75
+            antialiasing: true;
+
+
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: Material.color(Material.Grey,Material.Shade600); }
+                GradientStop { position: 0.5; color: "transparent"; }
+                GradientStop { position: 1.0; color: Material.color(Material.Grey,Material.Shade600); }
+            }
+        }
+    }
 }
 
 /*##^## Designer {

@@ -9,22 +9,35 @@ import "../singletons/."
 Rectangle {
     id: outerRectangle
 
-    property real myRadius
+    z:100
 
     anchors.margins: GlobalProperties.sunkenDepth
 
     Rectangle {
         id: sunkenRectangle
 
+        //property real myRadius: parent.radius/1.05
+/*
+        Component.onCompleted: {
+            myRadius=parent.radius/1.05
+        }
+
+        onHeightChanged: {
+            myRadius=parent.radius/1.05
+        }
+
+        onWidthChanged: {
+            myRadius=parent.radius/1.05
+        }
+
+        onWindowChanged: {
+            myRadius=parent.radius/1.05
+        }
+*/
         anchors.fill: parent
         anchors.margins: GlobalProperties.sunkenDepth
 
-        radius: parent.radius/1.05
-
-        Component.onCompleted: {
-            myRadius = radius;
-            radius = myRadius / 1.5
-        }
+        radius: parent.radius/(1.5*1.05)
 
         Material.theme: Material.Dark
         Material.background: Material.color(Material.Grey, Material.Shade400)
@@ -33,7 +46,7 @@ Rectangle {
 
         Rectangle { // draws the outer shadow/highlight
             id: sourceOuter;
-            radius: myRadius
+            radius: parent.radius*1.5
             antialiasing: true;
             gradient: Gradient {
                 GradientStop { position: 0.0; color: Material.color(Material.Grey,Material.Shade800); }
@@ -50,7 +63,7 @@ Rectangle {
         Rectangle { // mask for outer 3D effect
             id: maskOuter;
             color: "transparent";
-            radius: myRadius;
+            radius: parent.radius*1.5;
             antialiasing: true;
             border {
                 width: GlobalProperties.sunkenDepth;
