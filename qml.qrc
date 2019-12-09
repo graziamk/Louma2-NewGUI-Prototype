@@ -16,6 +16,7 @@
         <file>Page08ErrorLogForm.ui.qml</file>
         <file>Page09Utility.qml</file>
         <file>Page09UtilityForm.ui.qml</file>
+        <file>Page10Menu.qml</file>
         <file>Page10MenuForm.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>components/CornerClock.qml</file>

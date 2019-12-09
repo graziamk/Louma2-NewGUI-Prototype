@@ -1,9 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QWindow>
+#include <QQuickView>
 
 int main(int argc, char *argv[])
 {
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
@@ -24,6 +27,16 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     engine.load(url);
+/*
+ * This is the code (already adapted) used from the qtvirtualkeyboard example
+ * Need to figure out how to modify this for my project
+ *
+    QQuickView view(QString("qrc:///components/Basic.qml"));
+    if (view.status() == QQuickView::Error)
+        return -1;
+    view.setResizeMode(QQuickView::SizeRootObjectToView);
 
+    view.show();
+*/
     return app.exec();
 }
