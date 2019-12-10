@@ -195,6 +195,7 @@ Page {
                     }
 
                     */
+
                     Tumbler {
                         id: nodeListTumbler
 
@@ -203,25 +204,25 @@ Page {
 
                         background: shaderItem
 
-                            /*
-                            Rectangle {
-                                id: topBgRect
-                                opacity: nodeListTumbler.enabled ? 0.2 : 0.1
-                                color: GlobalProperties.fieldBgColor
-                                width: parent.width
-                                height: 1
-                                anchors.top: parent.top
 
-                            }
-                            Rectangle {
-                                id: btmBgRect
-                                opacity: nodeListTumbler.enabled ? 0.2 : 0.1
-                                color: GlobalProperties.fieldBgColor
-                                width: parent.width
-                                height: 1
-                                anchors.bottom: parent.bottom
-                            }
-                        */
+                        Rectangle {
+                            id: topBgRect
+                            opacity: nodeListTumbler.enabled ? 0.2 : 0.1
+                            color: GlobalProperties.fieldBgColor
+                            width: parent.width
+                            height: 1
+                            anchors.top: parent.top
+
+                        }
+                        Rectangle {
+                            id: btmBgRect
+                            opacity: nodeListTumbler.enabled ? 0.2 : 0.1
+                            color: GlobalProperties.fieldBgColor
+                            width: parent.width
+                            height: 1
+                            anchors.bottom: parent.bottom
+                        }
+
 
 
 
@@ -247,7 +248,8 @@ Page {
                             opacity: 0.2
                         }
 
-/*  // Remove Green Lines from Tumbler
+                        // Remove Green Lines from Tumbler
+                        /*
                         Rectangle {
                             id: upperLineMarker
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -468,4 +470,5 @@ Page {
 
         }
     }
+
 }

@@ -31,4 +31,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS +=
 
-DISTFILES +=
+DISTFILES += \
+    ../Louma2-NewGUI.qml

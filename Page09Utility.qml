@@ -88,6 +88,7 @@ Page09UtilityForm {
         id: nodeModel
 
         model: ListModel {
+            id: listModel
             ListElement { nodeName: "Console" }
             ListElement { nodeName: "System" }
             ListElement { nodeName: "Pan" }
@@ -101,16 +102,15 @@ Page09UtilityForm {
             ListElement { nodeName: "QTerm" }
         }
 
-        delegate: Component  {
-            Text {
-                text: nodeName
-                font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.35)
-                font.family: GlobalProperties.fontFamUI2
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
-            }
+        delegate:  Text {
+            text: nodeName
+            font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.35)
+            font.family: GlobalProperties.fontFamUI2
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
         }
+
     }
 
     Item {
@@ -119,12 +119,11 @@ Page09UtilityForm {
         Rectangle {
             anchors.fill: parent
             anchors.margins: parent.height/100  // this is a hack.  'anchors.fill: parent' should provide
-                                                // a perfect fit. I need to look into this when I have some
-                                                // time. Also, consider adding a gap and darkness between the
-                                                // SunkenRectangle inner border and the tumbler's outer border.
+            // a perfect fit. I need to look into this when I have some
+            // time. Also, consider adding a gap and darkness between the
+            // SunkenRectangle inner border and the tumbler's outer border.
             radius: rectComboBoxContainer.radius/1.75
             antialiasing: true;
-
 
             gradient: Gradient {
                 GradientStop { position: 0.0; color: Material.color(Material.Grey,Material.Shade600); }
@@ -133,6 +132,7 @@ Page09UtilityForm {
             }
         }
     }
+
 }
 
 /*##^## Designer {

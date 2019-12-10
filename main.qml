@@ -54,13 +54,12 @@ ApplicationWindow {
     // int angleBetween(a, Qt::ScreenOrientation b)
 
 
-    // Make the window frameless:
-    flags: Qt.FramelessWindowHint
-
     // RUN ONCE BLOCK
     // All start-up tasks should be put here; it will wait for  the screen to finish initializing
     // and all environment variables to be set-up.
     Component.onCompleted: {
+        // Set window title
+        title = "Louma2 Console"
 
         // SET WINDOW SIZE
         // During testing, I'm displaying a resizable window so that I can resize on the fly to check
@@ -78,15 +77,14 @@ ApplicationWindow {
         width = Screen.desktopAvailableWidth - x*2
 
         if (testBuild) {
+            // The final release should be, per my understanding, full-screen and without borders
+            // or window dressings, which I get from 'visible = false' and visibility = Qt.WindowMaximized.
+            // During tests: a resizable screen.
             visibility = Qt.WindowMaximized
         } else {
             // The final release should be, per my understanding, full-screen and without borders
-            // or window dressings, which I get from 'visible: true'.  During tests: a resizable screen.
-            console.log("Setting 'visible' to 'true'.")
-            // visible = true
-
-            // If we want the release to have boders and ability to Maximize/Minimize, etc., comment the line
-            // above 'visible = true', and uncomment the line below setting visibility to Qt.WindowFullScreen
+            // or window dressings, which I get from setting the FramelessWindowHint and visibility = Qt.WindowFullscreen.
+            flags = Qt.FramelessWindowHint
             visibility = Qt.WindowFullScreen
         }
 
@@ -172,8 +170,6 @@ ApplicationWindow {
     }
     // The main QML
 
-    title: qsTr("Louma2 Console")
-
     Timer {
         id: myTimer
 
@@ -258,6 +254,7 @@ ApplicationWindow {
 
             // Local Properties:
             readonly property int nodeListWidth: Math.round((110 / 320) * GlobalProperties.screenWidth)
+
         }
 
 

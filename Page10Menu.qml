@@ -4,56 +4,132 @@ import QtGraphicalEffects 1.13
 import QtQuick.Controls.Material 2.13
 import QtQml.Models 2.13
 
-//import QtQuick.VirtualKeyboard 2.13
-//import "content"
-//import "components"
+//import GlobalProperties 1.0
+//import GlobalSounds 1.0
+import "singletons/."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Page10MenuForm {
     id: page10_Menu
 
-    property alias nodeModelTumbler: nodeModelTumbler
-    property alias shaderItemTumbler: shaderItemTumbler
-
-    nodeListTumbler.onCurrentIndexChanged: {
-        if ( GlobalProperties.audioMute ) {
-            console.log("Tumbler selection sound muted");
-        } else {
-            GlobalSounds.tumblerSelectSound.play() ;
-            console.log("GlobalSounds.tumblerSelectSound.play() invoked.");
-        }
-    }
-
-    DelegateModel {
-        id: nodeModelTumbler
-
-        model: ListModel {
-            ListElement { nodeName: "Console" }
-            ListElement { nodeName: "System" }
-            ListElement { nodeName: "Pan" }
-            ListElement { nodeName: "Tilt" }
-            ListElement { nodeName: "Roll" }
-            ListElement { nodeName: "Leveling" }
-            ListElement { nodeName: "Telescope" }
-            ListElement { nodeName: "Altitude" }
-            ListElement { nodeName: "Azimuth" }
-            ListElement { nodeName: "Dolly" }
-            ListElement { nodeName: "QTerm" }
-        }
-
-        delegate: Component  {
-            Text {
-                text: nodeName
-                font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.35)
-                font.family: GlobalProperties.fontFamUI2
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
-            }
-        }
-    }
+    property alias xyzABC: xyzABC
 
     Item {
-        id: shaderItemTumbler
+        id: xyzABC
 
         Rectangle {
             anchors.fill: parent
@@ -64,7 +140,6 @@ Page10MenuForm {
             radius: rectComboBoxContainer.radius/1.75
             antialiasing: true;
 
-
             gradient: Gradient {
                 GradientStop { position: 0.0; color: Material.color(Material.Grey,Material.Shade600); }
                 GradientStop { position: 0.5; color: "transparent"; }
@@ -72,4 +147,10 @@ Page10MenuForm {
             }
         }
     }
+
 }
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/

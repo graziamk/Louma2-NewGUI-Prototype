@@ -52,5 +52,6 @@
         <file>singletons/GlobalProperties.qml</file>
         <file>singletons/GlobalSounds.qml</file>
         <file>singletons/qmldir</file>
+        <file>components/NodeListModel.qml</file>
     </qresource>
 </RCC>
