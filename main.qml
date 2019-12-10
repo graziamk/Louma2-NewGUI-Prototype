@@ -252,6 +252,12 @@ ApplicationWindow {
         }
 
         Page10MenuForm {
+            id: page10root
+
+            property alias page10root: page10root
+
+            // Local Properties:
+            readonly property int nodeListWidth: Math.round((110 / 320) * GlobalProperties.screenWidth)
         }
 
 
