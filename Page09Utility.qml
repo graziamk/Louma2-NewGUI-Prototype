@@ -11,9 +11,6 @@ import "singletons/."
 Page09UtilityForm {
     id: page09_Utility
 
-    property alias nodeModel: nodeModel
-    property alias shaderItem: shaderItem
-
     //background: Rectangle { color: "#FFFFFF" }
     /*
     background: Image {
@@ -82,35 +79,6 @@ Page09UtilityForm {
             GlobalSounds.tumblerSelectSound.play() ;
             console.log("GlobalSounds.tumblerSelectSound.play() invoked.");
         }
-    }
-
-    DelegateModel {
-        id: nodeModel
-
-        model: ListModel {
-            id: listModel
-            ListElement { nodeName: "Console" }
-            ListElement { nodeName: "System" }
-            ListElement { nodeName: "Pan" }
-            ListElement { nodeName: "Tilt" }
-            ListElement { nodeName: "Roll" }
-            ListElement { nodeName: "Leveling" }
-            ListElement { nodeName: "Telescope" }
-            ListElement { nodeName: "Altitude" }
-            ListElement { nodeName: "Azimuth" }
-            ListElement { nodeName: "Dolly" }
-            ListElement { nodeName: "QTerm" }
-        }
-
-        delegate:  Text {
-            text: nodeName
-            font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.35)
-            font.family: GlobalProperties.fontFamUI2
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
-        }
-
     }
 
     Item {

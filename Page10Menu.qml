@@ -8,128 +8,13 @@ import QtQml.Models 2.13
 //import GlobalSounds 1.0
 import "singletons/."
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Page10MenuForm {
     id: page10_Menu
 
-    property alias xyzABC: xyzABC
+    property string selectedNode
 
     Item {
-        id: xyzABC
+        id: shaderItem
 
         Rectangle {
             anchors.fill: parent
@@ -148,6 +33,11 @@ Page10MenuForm {
         }
     }
 
+
+    nodeListTumbler.onCurrentItemChanged: {
+        selectedNode = nodeListTumbler.currentItem;
+        console.log("nodeListTumbler.onCurrentItemChanged: new nodeListTumbler.currentItem: "+selectedNode)
+    }
 }
 
 /*##^## Designer {

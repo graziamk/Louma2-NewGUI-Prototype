@@ -1,17 +1,16 @@
-import QtQuick 2.13
-import QtQml.Models 2.13
-import QtQuick.Controls 2.13
-import QtQuick.Controls.Material 2.13
-import QtQuick.Layouts 1.13
-import QtQuick.Window 2.13
-import QtGraphicalEffects 1.13
+import QtQuick 2.12
+import QtQml.Models 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Layouts 1.12
+import QtQuick.Window 2.12
+import QtGraphicalEffects 1.12
 
 import "qrc:///components"
 
 //import GlobalProperties 1.0
 //import GlobalSounds 1.0
 import "singletons/."
-import "components"
 
 Page {
     id: page10_MenuForm
@@ -72,7 +71,18 @@ Page {
                         anchors.fill: parent
                         anchors.margins: GlobalProperties.sunkenDepth-GlobalProperties.myOffset
 
-                        background: xyzABC
+                        background: shaderItem
+
+                        model: NodeListModel {}
+
+                        delegate: Text {
+                            text: nodeName
+                            font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.35)
+                            font.family: GlobalProperties.fontFamUI2
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
+                        }
 
                         Rectangle {
                             id: topBgRect
@@ -90,18 +100,6 @@ Page {
                             height: 1
                             anchors.bottom: parent.bottom
                         }
-
-                        model: NodeListModel {}
-
-                        delegate: Text {
-                            text: nodeName
-                            font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.35)
-                            font.family: GlobalProperties.fontFamUI2
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
-                        }
-
 
                         Rectangle {
                             id: rectSelectionColoring
@@ -145,21 +143,35 @@ Page {
                     anchors.margins: GlobalProperties.sunkenDepth
                     radius: parent.radius
 
-                    Text {
-                        id: name
-                        font.family: GlobalProperties.fontFamUI2
-                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+                    TextInput {
+                        id: testTextInput
 
                         anchors.fill: parent
+
+                        x: 20
+                        y: 20
+                        width: Math.round(parent.width/3)
+                        height: Math.round(parent.height/15)
 
                         rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
                         leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
                         topPadding: Math.round(GlobalProperties.spacingV_5 /2 )
                         bottomPadding: topPadding/2
+
                         verticalAlignment: Text.AlignVCenter
+
                         text: qsTr("Device Description")
+                        wrapMode: TextInput.NoWrap
+                        echoMode: TextInput.Normal
+                        cursorVisible: true
+
+                        font.family: GlobalProperties.fontFamUI2
+                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+                        font.weight : Font.Normal
+                        font.capitalization: Font.MixedCase
                     }
                 }
+
             }
         }
 

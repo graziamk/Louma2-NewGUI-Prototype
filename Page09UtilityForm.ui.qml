@@ -12,7 +12,6 @@ import "qrc:///components"
 
 //import GlobalProperties 1.0
 //import GlobalSounds 1.0
-
 import "singletons/."
 
 Page {
@@ -53,8 +52,7 @@ Page {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-    CornerClock {
-    }
+    CornerClock {}
 
     Item {
         id: itemUtilityPage
@@ -93,7 +91,8 @@ Page {
 
                     color: GlobalProperties.fieldBgColor
                     width: page09root.nodeListWidth
-                    radius: (Math.min(GlobalProperties.btnWidth85, GlobalProperties.btnHeight35)/7)
+                    radius: (Math.min(GlobalProperties.btnWidth85,
+                                      GlobalProperties.btnHeight35) / 7)
 
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
@@ -101,6 +100,7 @@ Page {
 
                     anchors.margins: GlobalProperties.myOffset
                     anchors.rightMargin: GlobalProperties.spacingH_10 + GlobalProperties.myOffset
+
 
                     /*
                     Flickable {
@@ -195,15 +195,27 @@ Page {
                     }
 
                     */
-
                     Tumbler {
                         id: nodeListTumbler
+                        wrap: false
 
                         anchors.fill: parent
-                        anchors.margins: GlobalProperties.sunkenDepth-GlobalProperties.myOffset
+                        anchors.margins: GlobalProperties.sunkenDepth - GlobalProperties.myOffset
 
                         background: shaderItem
 
+                        model: NodeListModel {}
+
+                        delegate: Text {
+                            text: nodeName
+                            font.pixelSize: Math.round(
+                                                GlobalProperties.fontSize1 * 1.35)
+                            font.family: GlobalProperties.fontFamUI2
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            opacity: 1.0 - Math.abs(Tumbler.displacement)
+                                     / (nodeListTumbler.visibleItemCount / 2)
+                        }
 
                         Rectangle {
                             id: topBgRect
@@ -212,7 +224,6 @@ Page {
                             width: parent.width
                             height: 1
                             anchors.top: parent.top
-
                         }
                         Rectangle {
                             id: btmBgRect
@@ -223,19 +234,6 @@ Page {
                             anchors.bottom: parent.bottom
                         }
 
-
-
-
-                        contentItem: ListView {
-                            model: nodeModel
-                            //delegate: nameDelegate
-                            snapMode: ListView.SnapToItem
-                            highlightRangeMode: ListView.StrictlyEnforceRange
-                            preferredHighlightBegin: height / 2 - (height / nodeListTumbler.visibleItemCount / 2)
-                            preferredHighlightEnd: height / 2 + (height / nodeListTumbler.visibleItemCount / 2)
-                            clip: true
-                        }
-
                         Rectangle {
                             id: rectSelectionColoring
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -243,12 +241,14 @@ Page {
                             //anchors.top: upperLineMarker.top
                             //anchors.bottom: lowerLineMarker.bottom
                             width: parent.width // Math.round(parent.width * 0.6)
-                            height: Math.round(parent.height * 0.2) // Math.round(parent.width * 0.1) //Math.round(parent.height / 75)
+                            height: Math.round(
+                                        parent.height * 0.2) // Math.round(parent.width * 0.1) //Math.round(parent.height / 75)
                             color: "#a0f0f0" //"darkgray" //"#21be2b"
                             opacity: 0.2
                         }
 
                         // Remove Green Lines from Tumbler
+
                         /*
                         Rectangle {
                             id: upperLineMarker
@@ -269,7 +269,6 @@ Page {
                         }
 */
                     }
-
                 }
 
                 Grid {
@@ -334,7 +333,8 @@ Page {
                 anchors.margins: GlobalProperties.myOffset
                 anchors.topMargin: GlobalProperties.myOffset + GlobalProperties.spacingV_5
 
-                radius: Math.min(GlobalProperties.btnWidth85, GlobalProperties.btnHeight35)/7
+                radius: Math.min(GlobalProperties.btnWidth85,
+                                 GlobalProperties.btnHeight35) / 7
 
                 Rectangle {
                     id: rectDeviceDescription
@@ -346,14 +346,16 @@ Page {
                     Text {
                         id: name
                         font.family: GlobalProperties.fontFamUI2
-                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+                        font.pixelSize: Math.round(
+                                            GlobalProperties.fontSize1 * 1.5)
 
                         anchors.fill: parent
 
-                        rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                        rightPadding: Math.round(
+                                          GlobalProperties.spacingH_5 / 2)
                         leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
-                        topPadding: Math.round(GlobalProperties.spacingV_5 /2 )
-                        bottomPadding: topPadding/2
+                        topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+                        bottomPadding: topPadding / 2
                         verticalAlignment: Text.AlignVCenter
                         text: qsTr("Device Description")
                     }
@@ -441,9 +443,7 @@ Page {
 
                 //ubID: "btnDoneWithUP"
                 text: "Done"
-
             }
-
 
             UtilDrawer {
                 id: audioControlUtilDrawer
@@ -467,8 +467,6 @@ Page {
                 id: brightnessControlUtilDrawer
                 sliderLabel.text: "Set Display Brightness:"
             }
-
         }
     }
-
 }
