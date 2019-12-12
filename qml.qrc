@@ -22,6 +22,7 @@
         <file>components/CornerClock.qml</file>
         <file>components/CustomButton1.qml</file>
         <file>components/CustomButton2.qml</file>
+        <file>components/NodeListModel.qml</file>
         <file>components/SunkenRectangle.qml</file>
         <file>components/UtilDrawer.qml</file>
         <file>components/UtilityButton.qml</file>
@@ -43,15 +44,14 @@
         <file>images/P08-ErrorLog.png</file>
         <file>images/P09-Utility.png</file>
         <file>images/P10-Menu.png</file>
+        <file>singletons/GlobalProperties.qml</file>
+        <file>singletons/GlobalSounds.qml</file>
+        <file>singletons/qmldir</file>
         <file>sounds/AppChangeVolumeBeep.wav</file>
         <file>sounds/AppError.wav</file>
         <file>sounds/UI_ButtonClick.wav</file>
         <file>sounds/UI_ButtonPress.wav</file>
         <file>sounds/UI_ButtonRelease.wav</file>
         <file>sounds/UI_TumblerSelect.wav</file>
-        <file>singletons/GlobalProperties.qml</file>
-        <file>singletons/GlobalSounds.qml</file>
-        <file>singletons/qmldir</file>
-        <file>components/NodeListModel.qml</file>
     </qresource>
 </RCC>

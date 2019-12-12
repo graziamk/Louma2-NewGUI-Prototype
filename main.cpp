@@ -3,9 +3,6 @@
 #include <QWindow>
 #include <QQuickView>
 
-#include <osc_receiver.h> // oscpack
-#include <osc_sender.h> // oscpack
-
 
 int main(int argc, char *argv[])
 {
@@ -14,9 +11,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-
-    qmlRegisterType<OSCReceiver>("OSC", 1, 0, "OSCReceiver"); // oscpack
-    qmlRegisterType<OSCSender>("OSC", 1, 0, "OSCSender");     // oscpack
 
     QQmlApplicationEngine engine;
 

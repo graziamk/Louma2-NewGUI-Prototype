@@ -73,6 +73,8 @@ Page {
 
                         background: shaderItem
 
+                        wrap: false
+
                         model: NodeListModel {}
 
                         delegate: Text {

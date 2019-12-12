@@ -18,17 +18,6 @@ SOURCES += \
 RESOURCES += \
     qml.qrc
 
-INCLUDEPATH += /developer/libraries/oscpack_1_1_0/osc                   # oscpack
-INCLUDEPATH += /developer/libraries/oscpack_1_1_0/ip                    # oscpack
-
-LIBS += -L/developer/libraries/oscpack_1_1_0 -loscpack                  # oscpack
-#LIBS += -L/usr/lib/ -lSockets -lpthread                           # for Sockets required by oscpack
-
-include(/developer/libraries/oscpack_1_1_0/qml-osc-master/osc.pri)      # oscpack
-
-
-
-
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
