@@ -18,6 +18,11 @@ SOURCES += \
 RESOURCES += \
     qml.qrc
 
+#LIBS += -L"/developer/3rdPartyLibs/osc/lib" -loscpack
+
+#INCLUDEPATH += /developer/3rdPartyLibs/osc
+#include(/developer/3rdPartyLibs/osc/osc.pri)
+
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 

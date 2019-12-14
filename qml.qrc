@@ -53,5 +53,30 @@
         <file>sounds/UI_ButtonPress.wav</file>
         <file>sounds/UI_ButtonRelease.wav</file>
         <file>sounds/UI_TumblerSelect.wav</file>
+        <file>osc/include/ip/IpEndpointName.h</file>
+        <file>osc/include/ip/NetworkingUtils.h</file>
+        <file>osc/include/ip/PacketListener.h</file>
+        <file>osc/include/ip/TimerListener.h</file>
+        <file>osc/include/ip/UdpSocket.h</file>
+        <file>osc/include/osc/MessageMappingOscPacketListener.h</file>
+        <file>osc/include/osc/OscException.h</file>
+        <file>osc/include/osc/OscHostEndianness.h</file>
+        <file>osc/include/osc/OscOutboundPacketStream.h</file>
+        <file>osc/include/osc/OscPacketListener.h</file>
+        <file>osc/include/osc/OscPrintReceivedElements.h</file>
+        <file>osc/include/osc/OscReceivedElements.h</file>
+        <file>osc/include/osc/OscTypes.h</file>
+        <file>osc/lib/liboscpack.a</file>
+        <file>osc/LICENSE</file>
+        <file>osc/osc.pri</file>
+        <file>osc/osc.pro</file>
+        <file>osc/osc_plugin.cpp</file>
+        <file>osc/osc_plugin.h</file>
+        <file>osc/osc_receiver.cpp</file>
+        <file>osc/osc_receiver.h</file>
+        <file>osc/osc_sender.cpp</file>
+        <file>osc/osc_sender.h</file>
+        <file>osc/qmldir</file>
+        <file>osc/README.md</file>
     </qresource>
 </RCC>

@@ -16,12 +16,12 @@ ApplicationWindow {
 
     property alias mainTabBar: mainTabBar
     property alias mainSwipeView: mainSwipeView
-/*
+    /*
     property alias cstmBtn2CameraPower: cstmBtn2CameraPower
     property alias cstmBtn2StartupCrane: cstmBtn2StartupCrane
     property alias buttonContainerRect: buttonContainerRect
 */
-//    property alias enableButtonContainerRect: enableButtonContainerRect
+    //    property alias enableButtonContainerRect: enableButtonContainerRect
 
     // DEVELOPMENT SETTINGS
     // Use this setting to facilitate tests while keeping the code easier to maintain
@@ -176,87 +176,114 @@ ApplicationWindow {
         interval: 700
 
         onTriggered: {
-        buttonContainerRect.enabled = true;
-        buttonContainerRect.visible = true;
+            buttonContainerRect.enabled = true;
+            buttonContainerRect.visible = true;
         }
     }
 
-    SwipeView {
-        id: mainSwipeView
-
-        property alias currIDX: mainSwipeView.currentIndex
+    Rectangle {
+        id: rectVisibleArea
 
         anchors.fill: parent
-        currentIndex: mainTabBar.currentIndex
 
-        enabled: GlobalProperties.cranePowered
+        ScrollView {
+            id: kbScrollView
 
-        onCurrentIndexChanged: {
-            console.log("mainSwipeView.currentIndex = " + currentIndex)
-            if (currentIndex == 0) {
-                enableButtonContainerRect();
-            } else {
-                disableButtonContainerRect();
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            contentWidth: parent.width
+            contentHeight: parent.height
+
+            ScrollBar.horizontal.interactive: false
+            ScrollBar.vertical.interactive: true
+
+            SwipeView {
+                id: mainSwipeView
+
+                property alias currIDX: mainSwipeView.currentIndex
+
+                anchors.right: parent.right
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+
+                height: rectVisibleArea.height
+
+                currentIndex: mainTabBar.currentIndex
+
+                enabled: GlobalProperties.cranePowered
+
+                onCurrentIndexChanged: {
+                    console.log("mainSwipeView.currentIndex = " + currentIndex)
+                    if (currentIndex == 0) {
+                        enableButtonContainerRect();
+                    } else {
+                        disableButtonContainerRect();
+                    }
+                }
+
+                Page00SplashScreenForm {
+                    id: page00root
+
+                    property alias page00root: page00root
+
+                }
+
+                Page01OperatorForm {
+                }
+
+                Page02HandwheelDragForm {
+                }
+
+                Page03LensForm {
+                }
+
+                Page04CameraForm {
+                }
+
+                Page05CopyNodeForm {
+                }
+
+                Page06TelescopeForm {
+                }
+
+                Page07PlaningForm {
+                }
+
+                Page08ErrorLog {
+                    id: page08_ErrorLogRoot
+
+                }
+
+                Page09Utility {
+                    id: page09root
+
+                    property alias page09root: page09root
+
+                    // Local Properties:
+                    readonly property int nodeListWidth: Math.round((110 / 320) * GlobalProperties.screenWidth)
+
+                    Component.onCompleted: {
+                        audioControlDrawer.sliderValue = (audioControlDrawer.sliderMax-audioControlDrawer.sliderMin)/2
+                    }
+
+                }
+
+                Page10MenuForm {
+                    id: page10root
+
+                    property alias page10root: page10root
+
+                    // Local Properties:
+                    readonly property int nodeListWidth: Math.round((110 / 320) * GlobalProperties.screenWidth)
+
+                }
+
+
             }
-        }
-
-        Page00SplashScreenForm {
-            id: page00root
-
-            property alias page00root: page00root
 
         }
-
-        Page01OperatorForm {
-        }
-
-        Page02HandwheelDragForm {
-        }
-
-        Page03LensForm {
-        }
-
-        Page04CameraForm {
-        }
-
-        Page05CopyNodeForm {
-        }
-
-        Page06TelescopeForm {
-        }
-
-        Page07PlaningForm {
-        }
-
-        Page08ErrorLog {
-            id: page08_ErrorLogRoot
-
-        }
-
-        Page09Utility {
-            id: page09root
-
-            property alias page09root: page09root
-
-            // Local Properties:
-            readonly property int nodeListWidth: Math.round((110 / 320) * GlobalProperties.screenWidth)
-
-            Component.onCompleted: {
-                audioControlDrawer.sliderValue = (audioControlDrawer.sliderMax-audioControlDrawer.sliderMin)/2
-            }
-
-        }
-
-        Page10MenuForm {
-            id: page10root
-
-            property alias page10root: page10root
-
-            // Local Properties:
-            readonly property int nodeListWidth: Math.round((110 / 320) * GlobalProperties.screenWidth)
-
-        }
-
 
     }
 
