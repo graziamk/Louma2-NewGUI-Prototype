@@ -2,12 +2,9 @@
 #include <QQmlApplicationEngine>
 #include <QWindow>
 #include <QQuickView>
-/*
- *  #include <sys/types.h>      // prerequisite for oscpack
- *  #include <sys/socket.h>     // prerequisite for oscpack
- *  #include <osc_receiver.h>   // oscpack
- *  #include <osc_sender.h>     // oscpack
- */
+
+#include <osc_receiver.h>   // oscpack
+#include <osc_sender.h>     // oscpack
 
 int main(int argc, char *argv[])
 {
@@ -16,10 +13,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-/*
- *  qmlRegisterType<OSCReceiver>("OSC", 1, 0, "OSCReceiver");   // oscpack
- *  qmlRegisterType<OSCSender>("OSC", 1, 0, "OSCSender");       // oscpack
- */
+
+    qmlRegisterType<OSCReceiver>("OSC", 1, 0, "OSCReceiver");   // oscpack
+    qmlRegisterType<OSCSender>("OSC", 1, 0, "OSCSender");       // oscpack
+
     QQmlApplicationEngine engine;
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -36,7 +33,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     engine.load(url);
-/*
+    /*
  * This is the code (already adapted) used from the qtvirtualkeyboard example
  * Need to figure out how to modify this for my project
  *

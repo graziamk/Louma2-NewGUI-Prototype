@@ -5,6 +5,7 @@ import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 import QtGraphicalEffects 1.12
+import QtQuick.VirtualKeyboard 2.13
 
 import "qrc:///components"
 
@@ -15,8 +16,11 @@ import "singletons/."
 Page {
     id: page10_MenuForm
     property alias page10_MenuForm: page10_MenuForm
-    property alias nodeListTumbler: nodeListTumbler
-
+    property alias nodeTumbler: nodeTumbler
+    property alias testTextInput: testTextInput
+    property alias rectComboBoxContainer: rectComboBoxContainer
+    property alias textInputLowerText: textInputLowerText
+    property alias testTextInputTopRight: testTextInputTopRight
 
     Item {
         id: itemUtilityPage
@@ -28,17 +32,20 @@ Page {
         anchors.topMargin: GlobalProperties.spacingV_10
         anchors.bottomMargin: GlobalProperties.spacingV_10
 
-        Rectangle {
+        Column {
             id: rectUtilDefault
             z: 0
-            color: "transparent"
+            //color: "transparent"
 
-            height: GlobalProperties.rowH_75 + GlobalProperties.spacingV_5
-                    + GlobalProperties.rowH_29
+            //height: GlobalProperties.rowH_75 + GlobalProperties.spacingV_5
+            //        + GlobalProperties.rowH_29
 
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.left: parent.left
+            anchors.bottom: parent.bottom
+
+            spacing: GlobalProperties.spacingV_10
 
             Rectangle {
                 id: rectUtilityScreenLvl1
@@ -46,7 +53,6 @@ Page {
 
                 height: GlobalProperties.rowH_75
 
-                anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.left: parent.left
 
@@ -55,7 +61,8 @@ Page {
 
                     color: GlobalProperties.fieldBgColor
                     width: page09root.nodeListWidth
-                    radius: (Math.min(GlobalProperties.btnWidth85, GlobalProperties.btnHeight35)/7)
+                    radius: (Math.min(GlobalProperties.btnWidth85,
+                                      GlobalProperties.btnHeight35) / 7)
 
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
@@ -64,31 +71,32 @@ Page {
                     anchors.margins: GlobalProperties.myOffset
                     anchors.rightMargin: GlobalProperties.spacingH_10 + GlobalProperties.myOffset
 
-
                     Tumbler {
-                        id: nodeListTumbler
+                        id: nodeTumbler
 
                         anchors.fill: parent
-                        anchors.margins: GlobalProperties.sunkenDepth-GlobalProperties.myOffset
+                        anchors.margins: GlobalProperties.sunkenDepth - GlobalProperties.myOffset
+
 
                         background: shaderItem
-
                         wrap: false
 
                         model: NodeListModel {}
 
                         delegate: Text {
                             text: nodeName
-                            font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.35)
+                            font.pixelSize: Math.round(
+                                                GlobalProperties.fontSize1 * 1.35)
                             font.family: GlobalProperties.fontFamUI2
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            opacity: 1.0 - Math.abs(Tumbler.displacement) / (nodeListTumbler.visibleItemCount / 2)
+                            opacity: 1.0 - Math.abs(Tumbler.displacement)
+                                     / (nodeTumbler.visibleItemCount / 2)
                         }
 
                         Rectangle {
                             id: topBgRect
-                            opacity: nodeListTumbler.enabled ? 0.2 : 0.1
+                            opacity: nodeTumbler.enabled ? 0.2 : 0.1
                             color: GlobalProperties.fieldBgColor
                             width: parent.width
                             height: 1
@@ -96,7 +104,7 @@ Page {
                         }
                         Rectangle {
                             id: btmBgRect
-                            opacity: nodeListTumbler.enabled ? 0.2 : 0.1
+                            opacity: nodeTumbler.enabled ? 0.2 : 0.1
                             color: GlobalProperties.fieldBgColor
                             width: parent.width
                             height: 1
@@ -110,14 +118,12 @@ Page {
                             //anchors.top: upperLineMarker.top
                             //anchors.bottom: lowerLineMarker.bottom
                             width: parent.width // Math.round(parent.width * 0.6)
-                            height: Math.round(parent.height * 0.2) // Math.round(parent.width * 0.1) //Math.round(parent.height / 75)
+                            height: Math.round(
+                                        parent.height * 0.2) // Math.round(parent.width * 0.1) //Math.round(parent.height / 75)
                             color: "#a0f0f0" //"darkgray" //"#21be2b"
                             opacity: 0.2
                         }
                     }
-
-
-
                 }
 
             }
@@ -128,15 +134,14 @@ Page {
                 color: GlobalProperties.fieldBgColor
                 height: GlobalProperties.rowH_29
 
-                //width: Math.round((300 / 320) * utilityPage.width)
+                width: Math.round(0.3 * parent.width)
                 anchors.right: parent.right
                 anchors.left: parent.left
-                anchors.top: rectUtilityScreenLvl1.bottom
 
                 anchors.margins: GlobalProperties.myOffset
-                anchors.topMargin: GlobalProperties.myOffset + GlobalProperties.spacingV_5
 
-                radius: Math.min(GlobalProperties.btnWidth85, GlobalProperties.btnHeight35)/7
+                radius: Math.min(GlobalProperties.btnWidth85,
+                                 GlobalProperties.btnHeight35) / 7
 
                 Rectangle {
                     id: rectDeviceDescription
@@ -152,13 +157,14 @@ Page {
 
                         x: 20
                         y: 20
-                        width: Math.round(parent.width/3)
-                        height: Math.round(parent.height/15)
+                        width: Math.round(parent.width / 3)
+                        height: Math.round(parent.height / 15)
 
-                        rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                        rightPadding: Math.round(
+                                          GlobalProperties.spacingH_5 / 2)
                         leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
-                        topPadding: Math.round(GlobalProperties.spacingV_5 /2 )
-                        bottomPadding: topPadding/2
+                        topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+                        bottomPadding: topPadding / 2
 
                         verticalAlignment: Text.AlignVCenter
 
@@ -168,17 +174,122 @@ Page {
                         cursorVisible: true
 
                         font.family: GlobalProperties.fontFamUI2
-                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
-                        font.weight : Font.Normal
+                        font.pixelSize: Math.round(
+                                            GlobalProperties.fontSize1 * 1.5)
+                        font.weight: Font.Normal
                         font.capitalization: Font.MixedCase
                     }
                 }
-
             }
+
+            SunkenRectangle {
+                id: sunkenRectLowerText
+
+                color: GlobalProperties.fieldBgColor
+                height: GlobalProperties.rowH_29
+
+                //width: Math.round((300 / 320) * utilityPage.width)
+                anchors.right: parent.right
+                anchors.left: parent.left
+
+                anchors.margins: GlobalProperties.myOffset
+
+                radius: Math.min(GlobalProperties.btnWidth85,
+                                 GlobalProperties.btnHeight35) / 7
+
+                Rectangle {
+                    id: rectLowerText
+
+                    anchors.fill: parent
+                    anchors.margins: GlobalProperties.sunkenDepth
+                    radius: parent.radius
+
+                    TextInput {
+                        id: textInputLowerText
+
+                        anchors.fill: parent
+
+                        x: 20
+                        y: 20
+                        width: Math.round(parent.width / 3)
+                        height: Math.round(parent.height / 15)
+
+                        rightPadding: Math.round(
+                                          GlobalProperties.spacingH_5 / 2)
+                        leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                        topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+                        bottomPadding: topPadding / 2
+
+                        verticalAlignment: Text.AlignVCenter
+
+                        text: qsTr("Lower Text")
+                        wrapMode: TextInput.NoWrap
+                        echoMode: TextInput.Normal
+                        cursorVisible: true
+
+                        font.family: GlobalProperties.fontFamUI2
+                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+                        font.weight: Font.Normal
+                        font.capitalization: Font.MixedCase
+                    }
+                }
+            }
+
+            SunkenRectangle {
+                id: sunkenRectTextTopRight
+
+                color: GlobalProperties.fieldBgColor
+                height: GlobalProperties.rowH_29
+                width: Math.round(testTextInput.width * 0.6)
+
+                anchors.right: parent.right
+
+                anchors.margins: GlobalProperties.myOffset
+                //anchors.topMargin: GlobalProperties.myOffset + GlobalProperties.spacingV_5
+
+                radius: Math.min(GlobalProperties.btnWidth85,
+                                 GlobalProperties.btnHeight35) / 7
+
+                Rectangle {
+                    id: rectTextTopRight
+
+                    anchors.fill: parent
+                    anchors.margins: GlobalProperties.sunkenDepth
+                    radius: parent.radius
+
+
+
+                    TextInput {
+                        id: testTextInputTopRight
+
+                        anchors.fill: parent
+
+                        x: 20
+                        y: 20
+                        height: testTextInput.height
+
+                        rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                        leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                        topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+                        bottomPadding: topPadding / 2
+
+                        verticalAlignment: Text.AlignVCenter
+
+                        text: qsTr("Test High Input")
+                        wrapMode: TextInput.NoWrap
+                        echoMode: TextInput.Normal
+                        cursorVisible: true
+
+                        font.family: GlobalProperties.fontFamUI2
+                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+                        font.weight: Font.Normal
+                        font.capitalization: Font.MixedCase
+                    }
+                }
+            }
+
         }
-
     }
-
 }
 
 /*##^##

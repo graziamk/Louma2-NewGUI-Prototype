@@ -2,6 +2,9 @@ pragma Singleton
 import QtQuick 2.13
 
 QtObject {
+//    id: objectGlobalProperties
+
+//    property alias objectGlobalProperties: objectGlobalProperties
 
     // DEFINE CRANE AND CAMERA (POWER) PROPERTIES
     property bool cameraPowered
@@ -15,20 +18,25 @@ QtObject {
     }
 
     // Set SCREEN & WINDOW PROPERTIES
-    property real screenDPmm   // in pixels per mm, as reported by: Screen.pixelDensity
-    property int screenHeight // window height - mainTabBar height, in pixels
-    property int screenWidth  // window width, in pixel
+    property real screenDPmm        // in pixels per mm, as reported by: Screen.pixelDensity
+    property int screenHeight       // root window height - mainTabBar height, in pixels
+    property int screenWidth        // root window width, in pixel
+    property int rootWindowHeight   // root window height (including mainTabBar)
 
     function setScreenDPmm(d){
         screenHeight = d
     }
 
-    function setScreenHeight(x){
-        screenHeight = x
+    function setScreenHeight(y){
+        screenHeight = y
     }
 
-    function setScreenWidth(y){
-        screenWidth = y
+    function setScreenWidth(x){
+        screenWidth = x
+    }
+
+    function setRootWindowHeight(y) {
+        rootWindowHeight = y
     }
 
     // COLOR PROPERTIES
@@ -94,4 +102,23 @@ QtObject {
     property bool errorMute: false; // This Boolean should be checked before generating error sounds.
 
 
+    // LOCATION (HEIGHT) OF CURRENT TEXTFIELD
+    // This parameter will be updated by a given editable field and will contain its height, as measured
+    // from the bottom of the screen (needs to include the TabBar height).
+    // This parameter will be used for scrolling the screen to keep the editable field just above
+    // the keyboard.
+    property real inputFieldHeight      // This is the number of pixels between the bottom of the TextInput (or equivalent) to
+                                        // the bottom of the rootWindow.
+    property real qwertyKBHeight        // The Height of the qwerty Keyboard, set in main.qml and obtained from
+                                        // InputPanel's height
+    property bool qwertyKBActive        // This needs to be set true every time I receive focus on an TextInput (only?)
+                                        // or similar that has hinted for the qwerty Keyboard.
+    property real qwertyTmp             // special: holds values to avoid breaking links with qwertyScrollDelta
+    property real qwertyScrollDelta     // This will be evaluated the the needed height change for the main Scrollview
+    qwertyScrollDelta: qwertyTmp        // bind 1st to 2nd
+
+    onInputFieldHeightChanged: {
+//        qwertyTmp = inputFieldHeight - qwertyKBHeight
+        console.log("inputFieldHeight:"+inputFieldHeight);// +"\n  and qwertyTmp set to: "+qwertyTmp);
+    }
 }

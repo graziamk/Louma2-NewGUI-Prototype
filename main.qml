@@ -1,10 +1,11 @@
-import QtQuick 2.13
+import QtQuick 2.14
 import QtQuick.Window 2.2
-import QtQml 2.13
-import QtQuick.Controls 2.13
-import QtQuick.Controls.Material 2.13
-
-import QtMultimedia 5.13
+import QtQml 2.14
+import QtQuick.Controls 2.14
+import QtQuick.Controls.Material 2.14
+import QtQuick.VirtualKeyboard 2.14
+import QtQuick.VirtualKeyboard.Settings 2.14
+import QtMultimedia 5.14
 
 import "qrc:///components"
 import "qrc:///images"
@@ -16,6 +17,7 @@ ApplicationWindow {
 
     property alias mainTabBar: mainTabBar
     property alias mainSwipeView: mainSwipeView
+    property alias kbScrollView: kbScrollView
     /*
     property alias cstmBtn2CameraPower: cstmBtn2CameraPower
     property alias cstmBtn2StartupCrane: cstmBtn2StartupCrane
@@ -98,6 +100,11 @@ ApplicationWindow {
         Material.accent = Material.color(Material.Teal, Material.ShadeA200)
         //Material.foreground = Material.color(Material.BlueGrey, Material.ShadeA200)
 
+        // SET VIRTUAL-KEYBOARD-RELATED GlobalProperties
+        GlobalProperties.cursorHeight = 0;
+        GlobalProperties.qwertyKBHeight=inputPanel.height;
+        GlobalProperties.qwertyKBActive = true; // initial [default] value, util I implement all keyboard logic
+                                                // probably will be removed once keyboard logic implemented fully.
     }
 
     onScreenChanged: {
@@ -126,8 +133,9 @@ ApplicationWindow {
 
         // Create parameters to be re-used multiple times.  Everytime I need to know
         // how big my working screen is, I should refer to these two:
-        GlobalProperties.setScreenHeight(rootWindow.height-mainTabBar.height)// in pixels
-        GlobalProperties.setScreenWidth(rootWindow.width) // in pixels
+        GlobalProperties.setScreenHeight(rootWindow.height-mainTabBar.height)   // in pixels
+        GlobalProperties.setScreenWidth(rootWindow.width)                       // in pixels
+        GlobalProperties.setRootWindowHeight(rootWindow.height)                 // in pixels
     }
 
     function leaveSplashScreen() {
@@ -186,18 +194,78 @@ ApplicationWindow {
 
         anchors.fill: parent
 
+        // NOT SURE THIS NEEDS TO BE HERE OR INSIDE THE SCROLLVIEW
+        /*
+         * Need to remember this setting for whenever I want a 'Popup' version of the keyboard....
+         * ...not sure I'll ever use it (will probably use a smaller version of the pop-up)
+         * ...unless the 'fullscreen' actually means full-parent (can be limited by the parent)
+         * ...in which case, this is perfect for the non-scrolling inputs -> the pop-ups.
+        Binding {
+            target: VirtualKeyboardSettings
+            property: "fullScreenMode"
+            value: true
+        }
+        */
+
         ScrollView {
             id: kbScrollView
 
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
+            //anchors.bottomMargin:  GlobalProperties.cursorHeight // will try to use States instead
 
             contentWidth: parent.width
             contentHeight: parent.height
 
             ScrollBar.horizontal.interactive: false
-            ScrollBar.vertical.interactive: true
+            ScrollBar.horizontal.active: false
+
+            ScrollBar.vertical: ScrollBar {
+                parent: kbScrollView
+                x: kbScrollView.mirrored ? 0 : kbScrollView.width - width
+                y: kbScrollView.topPadding
+                height: kbScrollView.availableHeight
+                active: kbScrollView.availableHeight < height? true : false
+                interactive: false
+            }
+
+            /*
+             * Need to remember this setting for whenever I want a 'Popup' version of the keyboard....
+             * ...not sure I'll ever use it (will probably use a smaller version of the pop-up)
+             * ...unless the 'fullscreen' actually means full-parent (can be limited by the parent)
+             * ...in which case, this is perfect for the non-scrolling inputs -> the pop-ups.
+            Binding {
+                target: VirtualKeyboardSettings
+                property: "fullScreenMode"
+                value: true
+            }
+            */
+
+            states: State {
+                name: "qwertyKeyboardActive"
+                when: (inputPanel.active && GlobalProperties.qwertyKBActive)
+
+                PropertyChanges {
+                    target: mainSwipeView
+                    anchors.bottomMargin: GlobalProperties.qwertyScrollDelta
+                }
+            }
+
+            transitions: Transition {
+                from: ""
+                to: "qwertyKeyboardActive"
+                reversible: true
+                // smoothly reanchor myRect and move into new position
+                //AnchorAnimation { duration: 250 }
+                ParallelAnimation {
+                    NumberAnimation {
+                        properties: "y"
+                        duration: 250
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+            }
 
             SwipeView {
                 id: mainSwipeView
@@ -230,25 +298,25 @@ ApplicationWindow {
 
                 }
 
-                Page01OperatorForm {
+                Page01OperatorForm { // NOTE: change to Page01Operator (remove Form) after adding Page01Operator.qml
                 }
 
-                Page02HandwheelDragForm {
+                Page02HandwheelDragForm { // NOTE: change to Page02HandwheelDrag (remove Form) after adding Page02HandwheelDrag.qml
                 }
 
-                Page03LensForm {
+                Page03LensForm { // NOTE: change to Page03Lens (remove Form) after adding Page03Lens.qml
                 }
 
-                Page04CameraForm {
+                Page04CameraForm { // NOTE: change to Page04Camera (remove Form) after adding Page04Camera.qml
                 }
 
-                Page05CopyNodeForm {
+                Page05CopyNodeForm { // NOTE: change to Page05CopyNode (remove Form) after adding Page05CopyNode
                 }
 
-                Page06TelescopeForm {
+                Page06TelescopeForm { // NOTE: change to Page06Telescope (remove Form) after adding Page06Telescope
                 }
 
-                Page07PlaningForm {
+                Page07Planing {
                 }
 
                 Page08ErrorLog {
@@ -270,7 +338,7 @@ ApplicationWindow {
 
                 }
 
-                Page10MenuForm {
+                Page10Menu {
                     id: page10root
 
                     property alias page10root: page10root
@@ -578,4 +646,32 @@ ApplicationWindow {
 
     }
 
+    InputPanel {
+        id: inputPanel
+        z: 99
+        x: 0
+        y: screen.height
+        width: screen.width
+
+        states: State {
+            name: "visible"
+            when: inputPanel.active
+            PropertyChanges {
+                target: inputPanel
+                y: screen.height - inputPanel.height
+            }
+        }
+        transitions: Transition {
+            from: ""
+            to: "visible"
+            reversible: true
+            ParallelAnimation {
+                NumberAnimation {
+                    properties: "y"
+                    duration: 250
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+    }
 }

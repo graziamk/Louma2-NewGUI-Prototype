@@ -1,17 +1,17 @@
-import QtQuick 2.13
-import QtQuick.Controls 2.13
-import QtGraphicalEffects 1.13
-import QtQuick.Controls.Material 2.13
-import QtQml.Models 2.13
+import QtQuick 2.14
+import QtQuick.Controls 2.14
+import QtQuick.Controls.Material 2.14
+import QtQml 2.14
+import QtQml.Models 2.14
+import QtGraphicalEffects 1.14
 
-//import GlobalProperties 1.0
-//import GlobalSounds 1.0
 import "singletons/."
 
 Page10MenuForm {
     id: page10_Menu
 
     property string selectedNode
+    property int totalHeight
 
     Item {
         id: shaderItem
@@ -32,12 +32,45 @@ Page10MenuForm {
             }
         }
     }
-
-
-    nodeListTumbler.onCurrentItemChanged: {
-        selectedNode = nodeListTumbler.currentItem;
-        console.log("nodeListTumbler.onCurrentItemChanged: new nodeListTumbler.currentItem: "+selectedNode)
+/*
+    testTextInput.onCursorVisibleChanged: {
+        console.log("Entered testTextInput.onFocusChanged!!\n\n");
+        if (testTextInput.cursorVisible) {
+            GlobalProperties.inputFieldHeight = (totalHeight-testTextInput.mapToGlobal(0,testTextInput.height).y);
+            console.log("GlobalProperties.inputFieldHeight = "+GlobalProperties.inputFieldHeight);
+        }
     }
+*/
+
+    Binding {
+        target: GlobalProperties ; property: 'inputFieldHeight'
+        value: testTextInput.y; when: testTextInput.cursorVisible
+        restoreMode: Binding.RestoreNone
+    }
+    Binding {
+        target: GlobalProperties ; property: 'inputFieldHeight'
+        value: testTextInputTopRight.y; when: testTextInputTopRight.cursorVisible
+        restoreMode: Binding.RestoreNone
+    }
+
+    Binding {
+        target: GlobalProperties ; property: 'inputFieldHeight'
+        value: textInputLowerText.y; when: textInputLowerText.cursorVisible
+        restoreMode: Binding.RestoreNone
+    }
+
+    /*
+    Component.onCompleted: {
+        console.log("Page10 Component loaded (Completed).");
+        //GlobalProperties.cursorHeight = 40;
+        totalHeight = GlobalProperties.rootWindowHeight;
+    }
+*/
+    nodeTumbler.onCurrentItemChanged: {
+            selectedNode = nodeTumbler.currentItem.toString();
+        console.log("nodeTumbler.onCurrentItemChanged: new nodeTumbler.currentItem: "+selectedNode)
+    }
+
 }
 
 /*##^## Designer {

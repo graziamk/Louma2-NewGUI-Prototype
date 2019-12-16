@@ -1,2 +1,3 @@
 singleton GlobalProperties 1.0 GlobalProperties.qml
 singleton GlobalSounds 1.0 GlobalSounds.qml
+singleton GlobalOSC 1.0 GlobalOSC.qml
