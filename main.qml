@@ -18,6 +18,7 @@ ApplicationWindow {
     property alias mainTabBar: mainTabBar
     property alias mainSwipeView: mainSwipeView
     property alias kbScrollView: kbScrollView
+
     /*
     property alias cstmBtn2CameraPower: cstmBtn2CameraPower
     property alias cstmBtn2StartupCrane: cstmBtn2StartupCrane
@@ -55,6 +56,7 @@ ApplicationWindow {
     // Attached Methods
     // int angleBetween(a, Qt::ScreenOrientation b)
 
+    property int screenHeight  // local cache of GlobalProperties screenHeight, to improve performance
 
     // RUN ONCE BLOCK
     // All start-up tasks should be put here; it will wait for  the screen to finish initializing
@@ -102,7 +104,8 @@ ApplicationWindow {
 
         // SET VIRTUAL-KEYBOARD-RELATED GlobalProperties
         GlobalProperties.cursorHeight = 0;
-        GlobalProperties.qwertyKBHeight=inputPanel.height;
+        //GlobalProperties.qwertyKBHeight=inputPanel.height;
+        console.log("Keyboard Height (i.e. inputPanel.height) = "+inputPanel.height);
         GlobalProperties.qwertyKBActive = true; // initial [default] value, util I implement all keyboard logic
                                                 // probably will be removed once keyboard logic implemented fully.
     }
@@ -134,6 +137,7 @@ ApplicationWindow {
         // Create parameters to be re-used multiple times.  Everytime I need to know
         // how big my working screen is, I should refer to these two:
         GlobalProperties.setScreenHeight(rootWindow.height-mainTabBar.height)   // in pixels
+        screenHeight = GlobalProperties.screenHeight
         GlobalProperties.setScreenWidth(rootWindow.width)                       // in pixels
         GlobalProperties.setRootWindowHeight(rootWindow.height)                 // in pixels
     }
@@ -248,7 +252,7 @@ ApplicationWindow {
 
                 PropertyChanges {
                     target: mainSwipeView
-                    anchors.bottomMargin: GlobalProperties.qwertyScrollDelta
+                    anchors.bottomMargin: GlobalProperties.inputFieldHeight - (screenHeight - mainTabBar.height - inputPanel.height)
                 }
             }
 
@@ -650,15 +654,15 @@ ApplicationWindow {
         id: inputPanel
         z: 99
         x: 0
-        y: screen.height
-        width: screen.width
+        y: rootWindow.height
+        width: rootWindow.width
 
         states: State {
             name: "visible"
             when: inputPanel.active
             PropertyChanges {
                 target: inputPanel
-                y: screen.height - inputPanel.height
+                y: rootWindow.height - inputPanel.height
             }
         }
         transitions: Transition {

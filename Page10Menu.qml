@@ -44,20 +44,25 @@ Page10MenuForm {
 
     Binding {
         target: GlobalProperties ; property: 'inputFieldHeight'
-        value: testTextInput.y; when: testTextInput.cursorVisible
-        restoreMode: Binding.RestoreNone
-    }
-    Binding {
-        target: GlobalProperties ; property: 'inputFieldHeight'
-        value: testTextInputTopRight.y; when: testTextInputTopRight.cursorVisible
+        value: sunkenRectDeviceDescription.y + itemUtilityPage.y + GlobalProperties.spacingV_5
+        when: testTextInput.activeFocus
         restoreMode: Binding.RestoreNone
     }
 
     Binding {
         target: GlobalProperties ; property: 'inputFieldHeight'
-        value: textInputLowerText.y; when: textInputLowerText.cursorVisible
+        value: sunkenRectTextInputField2.y + itemUtilityPage.y + GlobalProperties.spacingV_5
+        when: textInputField2.activeFocus
         restoreMode: Binding.RestoreNone
     }
+
+    Binding {
+        target: GlobalProperties ; property: 'inputFieldHeight'
+        value: sunkenRectTextInputField3.y + itemUtilityPage.y + GlobalProperties.spacingV_5
+        when: textInputField3.activeFocus
+        restoreMode: Binding.RestoreNone
+    }
+
 
     /*
     Component.onCompleted: {

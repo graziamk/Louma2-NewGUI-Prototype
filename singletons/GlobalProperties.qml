@@ -109,16 +109,9 @@ QtObject {
     // the keyboard.
     property real inputFieldHeight      // This is the number of pixels between the bottom of the TextInput (or equivalent) to
                                         // the bottom of the rootWindow.
-    property real qwertyKBHeight        // The Height of the qwerty Keyboard, set in main.qml and obtained from
-                                        // InputPanel's height
-    property bool qwertyKBActive        // This needs to be set true every time I receive focus on an TextInput (only?)
-                                        // or similar that has hinted for the qwerty Keyboard.
-    property real qwertyTmp             // special: holds values to avoid breaking links with qwertyScrollDelta
-    property real qwertyScrollDelta     // This will be evaluated the the needed height change for the main Scrollview
-    qwertyScrollDelta: qwertyTmp        // bind 1st to 2nd
 
     onInputFieldHeightChanged: {
-//        qwertyTmp = inputFieldHeight - qwertyKBHeight
-        console.log("inputFieldHeight:"+inputFieldHeight);// +"\n  and qwertyTmp set to: "+qwertyTmp);
+        console.log("inputFieldHeight:"+inputFieldHeight); //+"\n  and qwertyTmp set to: "+qwertyTmp);
     }
+
 }

@@ -15,12 +15,17 @@ import "singletons/."
 
 Page {
     id: page10_MenuForm
+
+    property alias itemUtilityPage: itemUtilityPage
     property alias page10_MenuForm: page10_MenuForm
     property alias nodeTumbler: nodeTumbler
-    property alias testTextInput: testTextInput
     property alias rectComboBoxContainer: rectComboBoxContainer
-    property alias textInputLowerText: textInputLowerText
-    property alias testTextInputTopRight: testTextInputTopRight
+    property alias sunkenRectDeviceDescription: sunkenRectDeviceDescription
+    property alias sunkenRectTextInputField2: sunkenRectTextInputField2
+    property alias sunkenRectTextInputField3: sunkenRectTextInputField3
+    property alias testTextInput: testTextInput
+    property alias textInputField2: textInputField2
+    property alias textInputField3: textInputField3
 
     Item {
         id: itemUtilityPage
@@ -31,6 +36,18 @@ Page {
         anchors.leftMargin: GlobalProperties.spacingH_10
         anchors.topMargin: GlobalProperties.spacingV_10
         anchors.bottomMargin: GlobalProperties.spacingV_10
+
+
+        Rectangle {
+            color: "blue"
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            height: 3
+
+            y: GlobalProperties.screenHeight - 600
+        }
 
         Column {
             id: rectUtilDefault
@@ -127,14 +144,13 @@ Page {
                 }
 
             }
-
             SunkenRectangle {
                 id: sunkenRectDeviceDescription
 
                 color: GlobalProperties.fieldBgColor
                 height: GlobalProperties.rowH_29
 
-                width: Math.round(0.3 * parent.width)
+                //width: Math.round(0.3 * parent.width)
                 anchors.right: parent.right
                 anchors.left: parent.left
 
@@ -154,14 +170,9 @@ Page {
                         id: testTextInput
 
                         anchors.fill: parent
+                        anchors.centerIn: parent
 
-                        x: 20
-                        y: 20
-                        width: Math.round(parent.width / 3)
-                        height: Math.round(parent.height / 15)
-
-                        rightPadding: Math.round(
-                                          GlobalProperties.spacingH_5 / 2)
+                        rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
                         leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
                         topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
                         bottomPadding: topPadding / 2
@@ -174,8 +185,7 @@ Page {
                         cursorVisible: true
 
                         font.family: GlobalProperties.fontFamUI2
-                        font.pixelSize: Math.round(
-                                            GlobalProperties.fontSize1 * 1.5)
+                        font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
                         font.weight: Font.Normal
                         font.capitalization: Font.MixedCase
                     }
@@ -183,7 +193,7 @@ Page {
             }
 
             SunkenRectangle {
-                id: sunkenRectLowerText
+                id: sunkenRectTextInputField2
 
                 color: GlobalProperties.fieldBgColor
                 height: GlobalProperties.rowH_29
@@ -198,31 +208,26 @@ Page {
                                  GlobalProperties.btnHeight35) / 7
 
                 Rectangle {
-                    id: rectLowerText
+                    id: rectInputField2
 
                     anchors.fill: parent
                     anchors.margins: GlobalProperties.sunkenDepth
                     radius: parent.radius
 
                     TextInput {
-                        id: textInputLowerText
+                        id: textInputField2
 
                         anchors.fill: parent
+                        anchors.centerIn: parent
 
-                        x: 20
-                        y: 20
-                        width: Math.round(parent.width / 3)
-                        height: Math.round(parent.height / 15)
-
-                        rightPadding: Math.round(
-                                          GlobalProperties.spacingH_5 / 2)
+                        rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
                         leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
                         topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
                         bottomPadding: topPadding / 2
 
                         verticalAlignment: Text.AlignVCenter
 
-                        text: qsTr("Lower Text")
+                        text: qsTr("Text Input Field 2")
                         wrapMode: TextInput.NoWrap
                         echoMode: TextInput.Normal
                         cursorVisible: true
@@ -235,8 +240,9 @@ Page {
                 }
             }
 
+
             SunkenRectangle {
-                id: sunkenRectTextTopRight
+                id: sunkenRectTextInputField3
 
                 color: GlobalProperties.fieldBgColor
                 height: GlobalProperties.rowH_29
@@ -251,21 +257,18 @@ Page {
                                  GlobalProperties.btnHeight35) / 7
 
                 Rectangle {
-                    id: rectTextTopRight
+                    id: rectInputField3
 
                     anchors.fill: parent
                     anchors.margins: GlobalProperties.sunkenDepth
                     radius: parent.radius
 
-
-
                     TextInput {
-                        id: testTextInputTopRight
+                        id: textInputField3
 
                         anchors.fill: parent
+                        anchors.centerIn: parent
 
-                        x: 20
-                        y: 20
                         height: testTextInput.height
 
                         rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
@@ -275,7 +278,7 @@ Page {
 
                         verticalAlignment: Text.AlignVCenter
 
-                        text: qsTr("Test High Input")
+                        text: qsTr("Text Input Field 3")
                         wrapMode: TextInput.NoWrap
                         echoMode: TextInput.Normal
                         cursorVisible: true
@@ -287,7 +290,6 @@ Page {
                     }
                 }
             }
-
         }
     }
 }
