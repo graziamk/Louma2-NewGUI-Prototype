@@ -20,12 +20,17 @@ Page {
     property alias page10_MenuForm: page10_MenuForm
     property alias nodeTumbler: nodeTumbler
     property alias rectComboBoxContainer: rectComboBoxContainer
+    property alias sunkenRectTopRight: sunkenRectTopRight
     property alias sunkenRectDeviceDescription: sunkenRectDeviceDescription
     property alias sunkenRectTextInputField2: sunkenRectTextInputField2
     property alias sunkenRectTextInputField3: sunkenRectTextInputField3
+    property alias textInputTopRight: textInputTopRight
     property alias testTextInput: testTextInput
     property alias textInputField2: textInputField2
     property alias textInputField3: textInputField3
+    property alias textInputNumeric: textInputNumeric
+    property alias rectUtilDefault: rectUtilDefault
+    property alias topRow: topRect
 
     Item {
         id: itemUtilityPage
@@ -37,18 +42,6 @@ Page {
         anchors.topMargin: GlobalProperties.spacingV_10
         anchors.bottomMargin: GlobalProperties.spacingV_10
 
-
-        Rectangle {
-            color: "blue"
-
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            height: 3
-
-            y: GlobalProperties.screenHeight - 600
-        }
-
         Column {
             id: rectUtilDefault
             z: 0
@@ -57,33 +50,32 @@ Page {
             //height: GlobalProperties.rowH_75 + GlobalProperties.spacingV_5
             //        + GlobalProperties.rowH_29
 
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
+            anchors.fill: parent
 
+            anchors.topMargin: GlobalProperties.spacingV_10
             spacing: GlobalProperties.spacingV_10
 
             Rectangle {
-                id: rectUtilityScreenLvl1
-                color: "transparent"
+                id: topRect
+
 
                 height: GlobalProperties.rowH_75
 
+                //anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.left: parent.left
+
+                color: "transparent"
 
                 SunkenRectangle {
                     id: rectComboBoxContainer
 
-                    color: GlobalProperties.fieldBgColor
                     width: page09root.nodeListWidth
+                    height: parent.height
+
+                    color: GlobalProperties.fieldBgColor
                     radius: (Math.min(GlobalProperties.btnWidth85,
                                       GlobalProperties.btnHeight35) / 7)
-
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
 
                     anchors.margins: GlobalProperties.myOffset
                     anchors.rightMargin: GlobalProperties.spacingH_10 + GlobalProperties.myOffset
@@ -143,7 +135,112 @@ Page {
                     }
                 }
 
+                SunkenRectangle {
+                    id: sunkenRectTopRight
+
+                    color: GlobalProperties.fieldBgColor
+                    height: GlobalProperties.rowH_29
+
+                    width: Math.round(0.3 * parent.width)
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+
+                    anchors.margins: GlobalProperties.myOffset
+
+                    radius: Math.min(GlobalProperties.btnWidth85,
+                                     GlobalProperties.btnHeight35) / 7
+
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: GlobalProperties.sunkenDepth
+                        radius: parent.radius
+
+                        TextField {
+                            id: textInputTopRight
+
+                            anchors.fill: parent
+                            anchors.centerIn: parent
+
+                            rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                            leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                            topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+                            bottomPadding: topPadding / 2
+
+                            verticalAlignment: Text.AlignVCenter
+
+                            placeholderText: qsTr("Text Top Right")
+                            placeholderTextColor : "lightsteelblue"
+
+                            color: "black"
+
+                            wrapMode: TextInput.NoWrap
+                            echoMode: TextInput.Normal
+                            cursorVisible: true
+
+                            font.family: GlobalProperties.fontFamUI2
+                            font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+                            font.weight: Font.Normal
+                            font.capitalization: Font.MixedCase
+                        }
+                    }
+                }
+
+                SunkenRectangle {
+                    id: sunkenRectNumeric
+
+                    color: GlobalProperties.fieldBgColor
+                    height: GlobalProperties.rowH_29
+
+                    width: Math.round(0.2 * parent.width)
+                    anchors.bottom: parent.bottom
+                    anchors.left: rectComboBoxContainer.right
+
+                    anchors.leftMargin: GlobalProperties.spacingH_5
+
+                    radius: Math.min(GlobalProperties.btnWidth85,
+                                     GlobalProperties.btnHeight35) / 7
+
+
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: GlobalProperties.sunkenDepth
+                        radius: parent.radius
+
+                        TextField {
+                            id: textInputNumeric
+
+                            anchors.fill: parent
+                            anchors.centerIn: parent
+
+                            rightPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                            leftPadding: Math.round(GlobalProperties.spacingH_5 / 2)
+                            topPadding: Math.round(GlobalProperties.spacingV_5 / 2)
+                            bottomPadding: topPadding / 2
+
+                            verticalAlignment: Text.AlignVCenter
+
+                            placeholderText: qsTr("55.5")
+                            placeholderTextColor : "lightsteelblue"
+
+                            color: "black"
+
+                            inputMethodHints: Qt.ImhDigitsOnly
+
+                            //wrapMode: TextInput.NoWrap
+                            echoMode: TextInput.Normal
+                            cursorVisible: true
+
+                            font.family: GlobalProperties.fontFamUI2
+                            font.pixelSize: Math.round(GlobalProperties.fontSize1 * 1.5)
+                            font.weight: Font.Normal
+                            font.capitalization: Font.MixedCase
+
+
+                        }
+                    }
+                }
             }
+
             SunkenRectangle {
                 id: sunkenRectDeviceDescription
 
@@ -166,7 +263,7 @@ Page {
                     anchors.margins: GlobalProperties.sunkenDepth
                     radius: parent.radius
 
-                    TextInput {
+                    TextField {
                         id: testTextInput
 
                         anchors.fill: parent
@@ -179,7 +276,13 @@ Page {
 
                         verticalAlignment: Text.AlignVCenter
 
+                        placeholderText: qsTr("Existing Text")
+                        placeholderTextColor : "lightsteelblue"
+
+                        color: "black"
+
                         text: qsTr("Device Description")
+
                         wrapMode: TextInput.NoWrap
                         echoMode: TextInput.Normal
                         cursorVisible: true
@@ -214,7 +317,7 @@ Page {
                     anchors.margins: GlobalProperties.sunkenDepth
                     radius: parent.radius
 
-                    TextInput {
+                    TextField {
                         id: textInputField2
 
                         anchors.fill: parent
@@ -227,7 +330,11 @@ Page {
 
                         verticalAlignment: Text.AlignVCenter
 
-                        text: qsTr("Text Input Field 2")
+                        placeholderText: qsTr("Text Input Field 2 - Full Sreen")
+                        placeholderTextColor : "lightsteelblue"
+
+                        color: "black"
+
                         wrapMode: TextInput.NoWrap
                         echoMode: TextInput.Normal
                         cursorVisible: true
@@ -239,7 +346,6 @@ Page {
                     }
                 }
             }
-
 
             SunkenRectangle {
                 id: sunkenRectTextInputField3
@@ -263,7 +369,7 @@ Page {
                     anchors.margins: GlobalProperties.sunkenDepth
                     radius: parent.radius
 
-                    TextInput {
+                    TextField {
                         id: textInputField3
 
                         anchors.fill: parent
@@ -278,7 +384,10 @@ Page {
 
                         verticalAlignment: Text.AlignVCenter
 
-                        text: qsTr("Text Input Field 3")
+                        placeholderText: qsTr("Blank Input 2")
+                        placeholderTextColor: "lightsteelblue"
+
+                        color: "black"
                         wrapMode: TextInput.NoWrap
                         echoMode: TextInput.Normal
                         cursorVisible: true

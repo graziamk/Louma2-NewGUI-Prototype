@@ -4,7 +4,7 @@ import QtQuick.Controls.Material 2.14
 import QtQml 2.14
 import QtQml.Models 2.14
 import QtGraphicalEffects 1.14
-
+import QtQuick.VirtualKeyboard.Settings 2.14
 import "singletons/."
 
 Page10MenuForm {
@@ -43,24 +43,59 @@ Page10MenuForm {
 */
 
     Binding {
-        target: GlobalProperties ; property: 'inputFieldHeight'
-        value: sunkenRectDeviceDescription.y + itemUtilityPage.y + GlobalProperties.spacingV_5
+        target: GlobalProperties
+        property: 'inputFieldHeight'
+        value: itemUtilityPage.y + GlobalProperties.spacingV_10 + GlobalProperties.spacingV_5
+        when: textInputTopRight.activeFocus
+        restoreMode: Binding.RestoreNone
+    }
+
+    Binding {
+        target: GlobalProperties
+        property: 'inputFieldHeight'
+        value: itemUtilityPage.y + rectUtilDefault.y + sunkenRectDeviceDescription.y + GlobalProperties.spacingV_5
         when: testTextInput.activeFocus
         restoreMode: Binding.RestoreNone
     }
 
     Binding {
-        target: GlobalProperties ; property: 'inputFieldHeight'
-        value: sunkenRectTextInputField2.y + itemUtilityPage.y + GlobalProperties.spacingV_5
-        when: textInputField2.activeFocus
+        target: GlobalProperties
+        property: 'inputFieldHeight'
+        value: itemUtilityPage.y + rectUtilDefault.y + sunkenRectTextInputField3.y + GlobalProperties.spacingV_5
+        when: textInputField3.activeFocus
         restoreMode: Binding.RestoreNone
     }
 
+    // Hack to correct potential errors during transitions between different Virtual Keyboards.
+    // This exact section is not needed with current implementation (needed below).
+    // Leaving code in for now, will remove if still not needed at a later time (12/28/2019)
+    /*
+    textInputTopRight.onAccepted: {
+        GlobalProperties.inputFieldHeight = 0
+    }
+    textInputField3.onAccepted: {
+        GlobalProperties.inputFieldHeight = 0
+    }
+    testTextInput.onAccepted: {
+        GlobalProperties.inputFieldHeight = 0
+    }
+*/
     Binding {
-        target: GlobalProperties ; property: 'inputFieldHeight'
-        value: sunkenRectTextInputField3.y + itemUtilityPage.y + GlobalProperties.spacingV_5
-        when: textInputField3.activeFocus
-        restoreMode: Binding.RestoreNone
+        target: VirtualKeyboardSettings
+        property: "fullScreenMode"
+        value: true
+        when: textInputField2.activeFocus || textInputNumeric.activeFocus
+        restoreMode: Binding.RestoreBindingOrValue
+    }
+
+    // Hack to correct errors during transitions between different Virtual Keyboards (specifically,
+    // between two different full-screen Keyboards.  Apparently, Binding's restoreMode is not
+    // properly implemented.
+    textInputField2.onAccepted: {
+        GlobalProperties.inputFieldHeight = 0
+    }
+    textInputNumeric.onAccepted: {
+        GlobalProperties.inputFieldHeight = 0
     }
 
 
@@ -75,9 +110,7 @@ Page10MenuForm {
             selectedNode = nodeTumbler.currentItem.toString();
         console.log("nodeTumbler.onCurrentItemChanged: new nodeTumbler.currentItem: "+selectedNode)
     }
-
 }
-
 /*##^## Designer {
     D{i:0;autoSize:true;height:480;width:640}
 }

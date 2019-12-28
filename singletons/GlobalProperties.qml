@@ -109,6 +109,8 @@ QtObject {
     // the keyboard.
     property real inputFieldHeight      // This is the number of pixels between the bottom of the TextInput (or equivalent) to
                                         // the bottom of the rootWindow.
+    property bool qwertyKBActive        // This needs to be set true every time I receive focus on an TextInput (only?)
+                                        // or similar that has hinted for the qwerty Keyboard.
 
     onInputFieldHeightChanged: {
         console.log("inputFieldHeight:"+inputFieldHeight); //+"\n  and qwertyTmp set to: "+qwertyTmp);

@@ -107,7 +107,7 @@ ApplicationWindow {
         //GlobalProperties.qwertyKBHeight=inputPanel.height;
         console.log("Keyboard Height (i.e. inputPanel.height) = "+inputPanel.height);
         GlobalProperties.qwertyKBActive = true; // initial [default] value, util I implement all keyboard logic
-                                                // probably will be removed once keyboard logic implemented fully.
+        // probably will be removed once keyboard logic implemented fully.
     }
 
     onScreenChanged: {
@@ -246,19 +246,30 @@ ApplicationWindow {
             }
             */
 
-            states: State {
-                name: "qwertyKeyboardActive"
-                when: (inputPanel.active && GlobalProperties.qwertyKBActive)
+            states: [
+                State {
+                    name: "qwertyKeyboardActiveNotFS"
+                    when: (inputPanel.active && GlobalProperties.qwertyKBActive && !VirtualKeyboardSettings.fullScreenMode )
 
-                PropertyChanges {
-                    target: mainSwipeView
-                    anchors.bottomMargin: GlobalProperties.inputFieldHeight - (screenHeight - mainTabBar.height - inputPanel.height)
+                    PropertyChanges {
+                        target: mainSwipeView
+                        anchors.bottomMargin: GlobalProperties.inputFieldHeight - (screenHeight - mainTabBar.height - inputPanel.height)
+                    }
+                },
+                State {
+                    name: "qwertyKeyboardActiveFS"
+                    when: (inputPanel.active && GlobalProperties.qwertyKBActive && VirtualKeyboardSettings.fullScreenMode )
+
+                    PropertyChanges {
+                        target: mainSwipeView
+                        anchors.bottomMargin: -mainTabBar.height
+                    }
                 }
-            }
+            ]
 
             transitions: Transition {
                 from: ""
-                to: "qwertyKeyboardActive"
+                to: "qwertyKeyboardActiveNotFS" || "qwertyKeyboardActiveFS"
                 reversible: true
                 // smoothly reanchor myRect and move into new position
                 //AnchorAnimation { duration: 250 }
@@ -395,7 +406,6 @@ ApplicationWindow {
 
             width: 0
         }
-
 
         TabButton {
             id: tab1
